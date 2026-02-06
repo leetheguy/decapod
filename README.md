@@ -9,7 +9,10 @@ Decapod was created as a saner, safer alternative to [Open Claw](https://www.cla
 - **Double sandboxed** - Enhanced security isolation
 - **Mature front end UI** - Uses Open Web UI, or bring your own front end
 - **Mature back end tools** - Everything is done in n8n, a visual low-code tool builder
-- **More than 1000 safe, sanitized plugins** - Extensive n8n plugin ecosystem
+- **More than 1000 safe, sanitized integrations** - Extensive n8n integration/node ecosystem
+
+Decapod - supporting more invertebrate species
+💖🦀🦞🦐💖
 
 ---
 
