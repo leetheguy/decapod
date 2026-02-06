@@ -1,0 +1,32 @@
+services:
+  n8n:
+    image: docker.n8n.io/n8nio/n8n
+    container_name: n8n
+    restart: always
+    ports:
+      - "127.0.0.1:5678:5678"  # Expose on localhost only for internal API calls
+    environment:
+      - N8N_HOST=${SUBDOMAIN}.${DOMAIN_NAME}
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      - NODE_ENV=production
+      - WEBHOOK_URL=https://${SUBDOMAIN}.${DOMAIN_NAME}/
+      - GENERIC_TIMEZONE=${GENERIC_TIMEZONE}
+      - N8N_LICENSE_ACTIVATION_KEY=${N8N_LICENSE_ACTIVATION_KEY}
+      - N8N_TRUST_PROXY=true
+      - NODES_EXCLUDE="[]"
+    extra_hosts:
+      - "${SUBDOMAIN}.${DOMAIN_NAME}:127.0.0.1"  # Map external domain to localhost for internal API calls
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ${DATA_FOLDER}/local_files:/files
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
+
+volumes:
+  n8n_data:
+    external: true

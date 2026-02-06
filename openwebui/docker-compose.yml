@@ -1,0 +1,21 @@
+services:
+  openwebui:
+    image: ghcr.io/open-webui/open-webui:latest
+    container_name: openwebui
+    restart: unless-stopped
+    environment:
+      # Database configuration (Postgres)
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      # S3 Storage configuration (Minio) - temporarily disabled for troubleshooting
+      - S3_ENABLED=false
+    volumes:
+      - openwebui_data:/app/backend/data
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
+
+volumes:
+  openwebui_data:

@@ -1,0 +1,87 @@
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+*.env
+!.env.example
+
+# Caddy auto-generated files
+**/caddy_config/caddy/autosave.json
+**/caddy_config/caddy/*.json
+**/caddy_config/caddy/certificates/
+# Generated Caddyfile (keep Caddyfile.template)
+**/caddy_config/Caddyfile
+!**/caddy_config/Caddyfile.template
+
+# Docker volumes and data
+**/data/
+**/local_files/*
+!**/local_files/.gitkeep
+
+# Logs
+*.log
+logs/
+**/logs/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup
+*.old
+backup-*.sql
+*-backup-*.tar.gz
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Python (if any Python scripts)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Node.js (if any Node scripts)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# Database dumps
+*.sql
+*.dump
+
+# SSL certificates (if stored locally)
+*.pem
+*.key
+*.crt
+*.cert

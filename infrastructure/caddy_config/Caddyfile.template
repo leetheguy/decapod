@@ -1,0 +1,14 @@
+# Caddyfile template - Copy this to Caddyfile and edit with your domain names
+# Configure DNS A records pointing to your server IP
+
+n8n.example.com {
+    reverse_proxy n8n:5678 {
+        flush_interval -1
+    }
+}
+
+owui.example.com {
+    reverse_proxy openwebui:8080 {
+        flush_interval -1
+    }
+}
