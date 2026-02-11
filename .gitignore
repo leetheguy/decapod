@@ -85,3 +85,6 @@ build/
 *.key
 *.crt
 *.cert
+
+# Personal notes folder
+notes/

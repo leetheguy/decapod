@@ -1,0 +1,14 @@
+{
+  "name": "decapod",
+  "version": "1.0.0",
+  "description": "Decapod - Hard Body, Soft Core",
+  "type": "module",
+  "scripts": {
+    "create-agent": "node scripts/create-agent.mjs"
+  },
+  "dependencies": {
+    "inquirer": "^9.2.15",
+    "js-yaml": "^4.1.0",
+    "fs-extra": "^11.2.0"
+  }
+}

@@ -1,0 +1,173 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "read_skill",
+      "description": "Get documentation and YAML specifications for a specific skill.",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "description": "Name of the skill to inspect." }
+        },
+        "required": ["name"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "use_skill",
+      "description": "Execute a skill to resolve the current task. SUCCESS automatically removes the task from the queue. FAILURE returns an error and keeps the task active.",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "description": "Skill name." },
+          "specifications": { "type": "string", "description": "YAML data for the skill." }
+        },
+        "required": ["name", "specifications"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "list_jobs",
+      "description": "View all jobs in order of priority.",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "create_job",
+      "description": "Initialize a new job. Use 'urgent' to prioritize the job.",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "job_name": { "type": "string" },
+          "job_description": { "type": ["string", "null"] },
+          "urgent": { "type": ["boolean", "null"] },
+          "tasks": { "type": "array", "items": { "type": "string" } }
+        },
+        "required": ["job_name", "job_description", "urgent", "tasks"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "add_task_to_back",
+      "description": "Append a new task to the end of the current job's task list.",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "task": { "type": "string" }
+        },
+        "required": ["task"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "add_task_to_front",
+      "description": "Prepend a task to the start of the list (immediate next action).",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "task": { "type": "string" }
+        },
+        "required": ["task"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "move_current_task_to_back",
+      "description": "Cycle the current task to the end of the list to work on something else first.",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "skip_current_task",
+      "description": "Permanently remove the current task from the queue without executing a skill.",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "suspend_job",
+      "description": "Pause the current job and start the next available job. Requires a reason.",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "reason": { "type": "string" }
+        },
+        "required": ["reason"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "get_user_approval",
+      "description": "Request a Yes/No confirmation before proceeding with a creative or critical decision.",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "question": { "type": "string" }
+        },
+        "required": ["question"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "send_message_to_user",
+      "description": "Send a conversational message to the user. Use this ONLY when no other tool applies — for greetings, status updates, explanations, or when explicitly asked a general question. Do not use this to avoid making a decision.",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "message": { "type": "string", "description": "The message to send to the user." }
+        },
+        "required": ["message"],
+        "additionalProperties": false
+      }
+    }
+  }
+]

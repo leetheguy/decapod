@@ -7,11 +7,18 @@ Decapod was created as a saner, safer alternative to [Open Claw](https://www.cla
 - **No root access** - Runs with minimal privileges
 - **No sharing API keys** - Keep your credentials secure
 - **Double sandboxed** - Enhanced security isolation
+- **Battle tested toolbox** - Built on enterprise ready software
 - **Mature front end UI** - Uses Open Web UI, or bring your own front end
 - **Mature back end tools** - Everything is done in n8n, a visual low-code tool builder
 - **More than 1000 safe, sanitized integrations** - Extensive n8n integration/node ecosystem
 
-Decapod - supporting more invertebrate species
+## Design Approach
+
+Decapod is the Ikea furniture approach to running your own personal agent. All the pieces are in the box, but you have to assemble them yourself. That means a little more work, but also a lot more flexibility. This approach makes the entire system completely transparent. And n8n's visual interface means that you can modify your bot anyway you want with little or no code. 
+
+---
+
+Decapod - Hard Body, Soft Core
 💖🦀🦞🦐💖
 
 ---
@@ -24,6 +31,8 @@ Decapod - supporting more invertebrate species
 ---
 
 ## Quick Start
+
+
 
 ```bash
 # Clone the repository
