@@ -1,0 +1,153 @@
+{
+  "updatedAt": "2026-02-18T06:54:33.469Z",
+  "createdAt": "2026-02-15T22:55:59.905Z",
+  "id": "CiHj2thXdBfA_wiXBIG46",
+  "name": "research-recipes",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "parameters",
+              "type": "object"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "cd79a971-b5a5-41e1-82e3-b978594db88e",
+      "name": "research recipes"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        448,
+        0
+      ],
+      "id": "5b15ec85-7c27-4f66-998c-ecfeda70ad5f",
+      "name": "call themealdb.com"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get skill parameters\nconst params = $input.first().json.parameters;\nconst searchType = params.search_type;\nconst query = params.query || '';\n\n// Build API URL\nlet url;\n\nswitch(searchType) {\n  case 'name':\n    url = `search.php?s=${encodeURIComponent(query)}`;\n    break;\n  case 'ingredient':\n    url = `filter.php?i=${encodeURIComponent(query)}`;\n    break;\n  case 'category':\n    url = `filter.php?c=${encodeURIComponent(query)}`;\n    break;\n  case 'area':\n    url = `filter.php?a=${encodeURIComponent(query)}`;\n    break;\n  case 'random':\n    url = 'random.php';\n    break;\n  default:\n    throw new Error(`Invalid search_type: ${searchType}`);\n}\n\nreturn [{\n  json: {\n    url: `https://www.themealdb.com/api/json/v1/1/${url}`,\n    max_results: params.max_results || 10\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "b12462ce-db12-4d92-9795-24a9fad6223e",
+      "name": "convert parameters to url"
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $input.first().json;\nconst maxResults = $('convert parameters to url').first().json.max_results;\n\n// Extract meals array\nconst meals = response.meals || [];\n\n// Limit results BEFORE mapping\nconst limitedMeals = meals.slice(0, maxResults);\n\n// Format for AI\nconst formattedRecipes = limitedMeals.map(meal => {\n  // Build ingredients array\n  const ingredients = [];\n  for (let i = 1; i <= 20; i++) {\n    const ingredient = meal[`strIngredient${i}`];\n    const measure = meal[`strMeasure${i}`];\n    if (ingredient && ingredient.trim()) {\n      ingredients.push({\n        name: ingredient,\n        measurement: measure ? measure.trim() : ''\n      });\n    }\n  }\n\n  return {\n    name: meal.strMeal,\n    id: meal.idMeal,\n    category: meal.strCategory,\n    area: meal.strArea,\n    thumbnail: meal.strMealThumb,\n    instructions: meal.strInstructions,\n    ingredients: ingredients,\n    youtube: meal.strYoutube || null,\n    source: meal.strSource || null\n  };\n});\n\nreturn [{\n  json: {\n    recipes: formattedRecipes,\n    count: formattedRecipes.length\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        0
+      ],
+      "id": "13c14212-527f-4941-b368-defaa5d2153b",
+      "name": "format output"
+    }
+  ],
+  "connections": {
+    "research recipes": {
+      "main": [
+        [
+          {
+            "node": "convert parameters to url",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "call themealdb.com": {
+      "main": [
+        [
+          {
+            "node": "format output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "convert parameters to url": {
+      "main": [
+        [
+          {
+            "node": "call themealdb.com",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {
+    "research recipes": [
+      {
+        "json": {
+          "parameters": {
+            "search_type": "name",
+            "query": "pizza",
+            "max_results": 15
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "e34da87f-f0bd-4150-ae32-d2dd49772445",
+  "activeVersionId": "e34da87f-f0bd-4150-ae32-d2dd49772445",
+  "versionCounter": 41,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-02-15T22:55:59.908Z",
+      "createdAt": "2026-02-15T22:55:59.908Z",
+      "role": "workflow:owner",
+      "workflowId": "CiHj2thXdBfA_wiXBIG46",
+      "projectId": "3VUkLpzINgecRWdr",
+      "project": {
+        "updatedAt": "2026-02-02T04:03:17.811Z",
+        "createdAt": "2026-02-02T03:07:56.821Z",
+        "id": "3VUkLpzINgecRWdr",
+        "name": "Lee Nathan <applesquash@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "57cc3970-7590-465d-8afd-50f44218eb39"
+      }
+    }
+  ]
+}

@@ -1,0 +1,172 @@
+{
+  "updatedAt": "2026-02-20T07:35:45.649Z",
+  "createdAt": "2026-02-12T02:12:48.618Z",
+  "id": "AqAXqn8UmH3XlfMP3tID5",
+  "name": "utility/workbench 🪝",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Use these nodes to spoof skill calls for testing.",
+        "height": 240,
+        "width": 688,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -32,
+        -176
+      ],
+      "typeVersion": 1,
+      "id": "e7f49172-e2d7-4fdc-848d-58cd834df0cc",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "filters": {
+          "name": "="
+        },
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        32,
+        -112
+      ],
+      "id": "38a0937d-0ed8-4035-beca-f4fc3a891675",
+      "name": "get workflow id from name",
+      "credentials": {
+        "n8nApi": {
+          "id": "PuWsJJDi2AGD3pbU",
+          "name": "meta"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "={{ $('get workflow id from name').item.json.id }}",
+          "mode": "id",
+          "cachedResultUrl": "/workflow/=%7B%7B%20$('get%20workflow%20id%20from%20name').item.json.id%20%7D%7D"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "parameters": "={{ $json.parameters }}"
+          },
+          "matchingColumns": [
+            "parameters"
+          ],
+          "schema": [
+            {
+              "id": "parameters",
+              "displayName": "parameters",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        480,
+        -112
+      ],
+      "id": "db43c000-3137-4895-9661-58d7355bda01",
+      "name": "call skill based on workflow id"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "96dfc5b3-96d5-45e9-b8f2-42f619bb5224",
+              "name": "parameters",
+              "value": "=",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        256,
+        -112
+      ],
+      "id": "d30c8452-fef4-415d-8a33-ca9bd609d2f0",
+      "name": "deliver JSON arguments to skill"
+    }
+  ],
+  "connections": {
+    "get workflow id from name": {
+      "main": [
+        [
+          {
+            "node": "deliver JSON arguments to skill",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "deliver JSON arguments to skill": {
+      "main": [
+        [
+          {
+            "node": "call skill based on workflow id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "44ac8383-c62e-4f8a-9fad-bd8500e7dfd4",
+  "activeVersionId": null,
+  "versionCounter": 18,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-02-12T02:12:48.624Z",
+      "createdAt": "2026-02-12T02:12:48.624Z",
+      "role": "workflow:owner",
+      "workflowId": "AqAXqn8UmH3XlfMP3tID5",
+      "projectId": "3VUkLpzINgecRWdr",
+      "project": {
+        "updatedAt": "2026-02-02T04:03:17.811Z",
+        "createdAt": "2026-02-02T03:07:56.821Z",
+        "id": "3VUkLpzINgecRWdr",
+        "name": "Lee Nathan <applesquash@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "57cc3970-7590-465d-8afd-50f44218eb39"
+      }
+    }
+  ]
+}

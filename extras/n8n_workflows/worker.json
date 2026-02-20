@@ -1,0 +1,2608 @@
+{
+  "updatedAt": "2026-02-20T07:36:45.932Z",
+  "createdAt": "2026-02-05T02:24:20.190Z",
+  "id": "LFNBtP5MJ8zcQsXBe90a9",
+  "name": "worker 👩‍🏭",
+  "description": "This is where the sausage gets made. The beating heart of Decapod.",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "148771f2-8036-434f-b068-9b2e3ed5b199",
+              "leftValue": "={{ $json.working }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        224,
+        0
+      ],
+      "id": "d50f9ff2-bea8-41b5-85f2-09354d51b524",
+      "name": "if a worker is working (thread locked), exit"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ee59900f-d7d2-40e3-8f55-ebc8ebc31859",
+              "leftValue": "={{ $json.response_to_user }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        704,
+        0
+      ],
+      "id": "a83c7b33-6e0a-43c9-8387-93365d5bcc0f",
+      "name": "if AI response to user exists"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "decapod_state",
+          "mode": "list",
+          "cachedResultName": "decapod_state"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "working": true,
+            "state_name": "decapod"
+          },
+          "matchingColumns": [
+            "state_name"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "state_name",
+              "displayName": "state_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "agent_name",
+              "displayName": "agent_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "working",
+              "displayName": "working",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "default_model",
+              "displayName": "default_model",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "initial_session",
+              "displayName": "initial_session",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "response_to_user",
+              "displayName": "response_to_user",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "updated_at",
+              "displayName": "updated_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        480,
+        0
+      ],
+      "id": "62d4560c-8d7d-4aeb-ae35-570d27009622",
+      "name": "lock state to working",
+      "credentials": {
+        "postgres": {
+          "id": "0UtciEE4IUCD05zk",
+          "name": "decapod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "deactivate",
+        "workflowId": {
+          "__rl": true,
+          "value": "A0iRkgxrmBlXTBBbL0Pw3",
+          "mode": "list",
+          "cachedResultName": "timer (#A0iRkgxrmBlXTBBbL0Pw3)"
+        },
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        2112,
+        464
+      ],
+      "id": "6b21c1df-bb9c-4997-b9a9-453699ce1a1f",
+      "name": "stop timer",
+      "credentials": {
+        "n8nApi": {
+          "id": "PuWsJJDi2AGD3pbU",
+          "name": "meta"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "decapod_state",
+          "mode": "list",
+          "cachedResultName": "decapod_state"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "working": false,
+            "state_name": "decapod",
+            "initial_session": "{}"
+          },
+          "matchingColumns": [
+            "state_name"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "state_name",
+              "displayName": "state_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "agent_name",
+              "displayName": "agent_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "working",
+              "displayName": "working",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "default_model",
+              "displayName": "default_model",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "initial_session",
+              "displayName": "initial_session",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "response_to_user",
+              "displayName": "response_to_user",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "updated_at",
+              "displayName": "updated_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1904,
+        464
+      ],
+      "id": "5cc11d41-f80c-469f-9b91-0904bccfd1cf",
+      "name": "set state to not working",
+      "credentials": {
+        "postgres": {
+          "id": "0UtciEE4IUCD05zk",
+          "name": "decapod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### Queue is Empty\n### Jobs are Done\n### Chat History Fork is Disposed of\n### App Goes Into Stasis\n\n(This was phased out when the timer system was removed. Will likely remove before next release. Leaving it in for now cuz it aint broke.)",
+        "height": 352,
+        "width": 448,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1840,
+        256
+      ],
+      "typeVersion": 1,
+      "id": "83a3cd9c-6924-4b77-8807-578824b843a7",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "546b0a25-16ea-4da0-8aa2-c71e011ae485",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1184,
+        192
+      ],
+      "id": "3a63e00f-96f8-4807-be6c-b0d4bfd60263",
+      "name": "if queue has items"
+    },
+    {
+      "parameters": {
+        "content": "## This system let the user call the AI at any time to have it manage the queue.",
+        "height": 432,
+        "width": 480,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        640,
+        -272
+      ],
+      "typeVersion": 1,
+      "id": "c0e498b1-648a-43b7-a097-a0c4bf2db190",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "### The current state name defaults to decapod. But in the future, there may be more than one state for multiple agents. That's why we pass the worker the state. So it knows which one it's meant to work with.",
+        "height": 240,
+        "width": 368,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -368,
+        -112
+      ],
+      "typeVersion": 1,
+      "id": "167220c6-7267-4f1b-8b5c-9f98f20257b5",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE job_queue \nSET tool_message_history = $1::jsonb\nWHERE id = $2",
+        "options": {
+          "queryReplacement": "=[\n  {{ $json.messages }},\n  {{ $json.id }}\n]"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        3424,
+        -32
+      ],
+      "id": "efc4a4da-4e38-4bdc-8af8-f4a2a11a43ea",
+      "name": "update tool message history",
+      "credentials": {
+        "postgres": {
+          "id": "0UtciEE4IUCD05zk",
+          "name": "decapod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "5kppUnbjgsqQAVeHTxLxd",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/5kppUnbjgsqQAVeHTxLxd",
+          "cachedResultName": "get job queue"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        960,
+        192
+      ],
+      "id": "ac38f6fb-9137-4e50-8056-2e3d697edb8b",
+      "name": "Call 'get job queue'",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "let history = $input.first().json.tool_message_history;\nlet output = history.at(-1);\n\nreturn output;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        -16
+      ],
+      "id": "8f108336-a32a-406c-96da-b4af53b183d3",
+      "name": "get the latest AI message from the current job"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.first().json.response_to_user.choices[0].message;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        960,
+        -112
+      ],
+      "id": "bae81f2c-9637-45cb-9f01-7052da5af07b",
+      "name": "get just the AI response to user message"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "state",
+              "type": "object"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -112,
+        0
+      ],
+      "id": "404cee0c-a0a0-482d-9a84-660efa1136e7",
+      "name": "hello worker"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "VvZ0lDdq_ahsprb_90r5M",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/VvZ0lDdq_ahsprb_90r5M",
+          "cachedResultName": "AI tool router"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "state": "={{ $('hello worker').first().json.state }}",
+            "message": "={{ $input.first().json }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "state",
+              "displayName": "state",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object",
+              "removed": false
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1968,
+        -112
+      ],
+      "id": "aa3b9070-995e-46ea-beb2-2b9ea641a22d",
+      "name": "Call 'AI tool router'",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1760,
+        -112
+      ],
+      "id": "1d21ff45-3300-4d3c-a203-60d148e51b0e",
+      "name": "normalize AI response message"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "d52067cd-c927-42ae-aebb-d19b43dfe06e",
+              "leftValue": "={{ $('get just the AI response to user message').isExecuted }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2320,
+        -128
+      ],
+      "id": "df7b596f-c9c3-432e-9285-8d4bee021b45",
+      "name": "if AI is responding to a user"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "decapod_state",
+          "mode": "list",
+          "cachedResultName": "decapod_state"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "state_name": "decapod",
+            "response_to_user": "{}"
+          },
+          "matchingColumns": [
+            "state_name"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "state_name",
+              "displayName": "state_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "agent_name",
+              "displayName": "agent_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "working",
+              "displayName": "working",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "default_model",
+              "displayName": "default_model",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "initial_session",
+              "displayName": "initial_session",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "response_to_user",
+              "displayName": "response_to_user",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "updated_at",
+              "displayName": "updated_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2528,
+        -256
+      ],
+      "id": "bb880f89-e700-4386-933b-ff6ce8608401",
+      "name": "remove initial AI response to user",
+      "credentials": {
+        "postgres": {
+          "id": "0UtciEE4IUCD05zk",
+          "name": "decapod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "let message = $input.first().json.choices[0].message;\nlet history = $('compose message histories').first().json.tool_message_history;\n\nhistory.messages = history.messages.concat(message);\n\nreturn history;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3200,
+        -32
+      ],
+      "id": "f2e50413-6235-404d-90df-cbfc785dd9d9",
+      "name": "append ai response to tool message history"
+    },
+    {
+      "parameters": {
+        "jsCode": "let session = $('hello worker').first().json.state.initial_session.body;\nlet tool_messages = $input.first().json.tool_message_history;\nlet tool_response = $('Call \\'AI tool router\\'').first().json.message;\n\nlet tool_message_history = {\n  id: $input.first().json.id,\n  messages: tool_messages.concat(tool_response)\n}\n\nlet ai_output_messages = [  \n  ...session.messages,\n  ...tool_messages,\n  tool_response\n]\n\nconsole.log(tool_messages)\n\nlet ai_prompt = {\n  \"model\": \"anthropic/claude-haiku-4.5\",\n  \"messages\": ai_output_messages,\n  \"tools\": session.tools,\n  \"stream\": false\n}\n\nlet output = {\n  tool_message_history: tool_message_history,\n  ai_prompt: ai_prompt\n}\n\n\nreturn output;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2752,
+        -32
+      ],
+      "id": "ffd08325-1c4b-4cbf-be64-6947da05d202",
+      "name": "compose message histories"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "decapod_state",
+          "mode": "list",
+          "cachedResultName": "decapod_state"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "working": false,
+            "state_name": "decapod"
+          },
+          "matchingColumns": [
+            "state_name"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "state_name",
+              "displayName": "state_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "agent_name",
+              "displayName": "agent_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "working",
+              "displayName": "working",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "default_model",
+              "displayName": "default_model",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "initial_session",
+              "displayName": "initial_session",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "response_to_user",
+              "displayName": "response_to_user",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "updated_at",
+              "displayName": "updated_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        3648,
+        -32
+      ],
+      "id": "7b13e57a-7780-4462-8470-95d71b8bb435",
+      "name": "release thread lock",
+      "credentials": {
+        "postgres": {
+          "id": "0UtciEE4IUCD05zk",
+          "name": "decapod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "job_queue",
+          "mode": "list",
+          "cachedResultName": "job_queue"
+        },
+        "limit": 1,
+        "where": {
+          "values": [
+            {
+              "column": "id",
+              "value": "={{ $('Call \\'AI tool router\\'').item.json.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2528,
+        -32
+      ],
+      "id": "b0969c6a-53a3-44ee-9740-f77b3f86ef3f",
+      "name": "get current job",
+      "credentials": {
+        "postgres": {
+          "id": "0UtciEE4IUCD05zk",
+          "name": "decapod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openRouterApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $input.first().json.ai_prompt }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2992,
+        -32
+      ],
+      "id": "29644abe-8086-40b9-84cc-5b90709f4c37",
+      "name": "send history and tool call output message to AI",
+      "credentials": {
+        "openRouterApi": {
+          "id": "tCnBW8DyX2OD1ciT",
+          "name": "OpenRouter account"
+        },
+        "httpBearerAuth": {
+          "id": "faHm1CP1A9OL9Jjp",
+          "name": "open router raw"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openRouterApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $input.first().json.ai_prompt }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2992,
+        208
+      ],
+      "id": "672d7e1d-9b8a-490a-ae1d-4c3305402631",
+      "name": "respond to user1",
+      "credentials": {
+        "openRouterApi": {
+          "id": "tCnBW8DyX2OD1ciT",
+          "name": "OpenRouter account"
+        },
+        "httpBearerAuth": {
+          "id": "faHm1CP1A9OL9Jjp",
+          "name": "open router raw"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "let session = $('hello worker').first().json.state.initial_session.body;\nlet tool_messages = $input.first().json.tool_message_history;\nlet tool_response = $('Call \\'AI tool router\\'').first().json.message;\n\nlet tool_message_history = {\n  id: $input.first().json.id,\n  messages: tool_messages.concat(tool_response)\n}\n\nlet ai_output_messages = [  \n  ...session.messages,\n  ...tool_messages,\n  tool_response\n]\n\nconsole.log(tool_messages)\n\nlet ai_prompt = {\n  \"model\": \"anthropic/claude-haiku-4.5\",\n  \"messages\": ai_output_messages,\n  \"tools\": session.tools,\n  \"stream\": false\n}\n\nlet output = {\n  tool_message_history: tool_message_history,\n  ai_prompt: ai_prompt\n}\n\n\nreturn output;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2752,
+        208
+      ],
+      "id": "8f750bc8-cf72-4fca-800c-5ed11229b456",
+      "name": "compose error summary",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "job_queue",
+          "mode": "list",
+          "cachedResultName": "job_queue"
+        },
+        "limit": 1,
+        "where": {
+          "values": [
+            {
+              "column": "complete",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2384,
+        464
+      ],
+      "id": "3ed66970-b18f-4e3d-baa1-6d6c47fa6d50",
+      "name": "get latest completed job",
+      "credentials": {
+        "postgres": {
+          "id": "0UtciEE4IUCD05zk",
+          "name": "decapod"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2672,
+        464
+      ],
+      "id": "2ce9cd99-1a08-40a8-9ed8-c4427efe16e4",
+      "name": "logic for completed vs suspended"
+    },
+    {
+      "parameters": {
+        "jsCode": "let state = $('hello worker').first().json.state;\nlet session = state.initial_session.body;\nlet tool_messages = $input.first().json.tool_message_history;\n\n// Grab the final assistant message as the summary\nlet summary = tool_messages.findLast(m => \n  m.role === 'assistant' && !m.tool_calls\n);\n\n// Build the OpenAI response envelope\nreturn [{\n  json: {\n    id: \"chatcmpl-decapod\",\n    object: \"chat.completion\",\n    created: Math.floor(Date.now() / 1000),\n    model: state.default_model,\n    choices: [\n      {\n        index: 0,\n        message: {\n          role: \"assistant\",\n          content: summary?.content ?? \"Job complete.\"\n        },\n        finish_reason: \"stop\"\n      }\n    ],\n    usage: {\n      prompt_tokens: 0,\n      completion_tokens: 0,\n      total_tokens: 0\n    }\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2992,
+        464
+      ],
+      "id": "242bbc9a-0290-49db-8e45-a5f33e990c5c",
+      "name": "compose final message history"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $('send history and tool call output message to AI').first().json"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3856,
+        -32
+      ],
+      "id": "730f4e56-eb65-4a39-8f5f-4b8a2e598df8",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n# Visit me!\n(click node and\n`ctrl/cmd shift O` to open)",
+        "height": 336,
+        "width": 224,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        896,
+        160
+      ],
+      "typeVersion": 1,
+      "id": "b6f0ae7a-7c10-4fcd-bdd7-e92bedf8a26b",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n# Update Credentials!",
+        "height": 336,
+        "width": 224,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        416,
+        -32
+      ],
+      "typeVersion": 1,
+      "id": "352a6a24-54b4-4c77-bbb4-19f4be8350ae",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "This takes in identical data from two nodes so that the next node doesn't have to worry about where the data is coming from.",
+        "height": 304,
+        "width": 192,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1712,
+        -256
+      ],
+      "typeVersion": 1,
+      "id": "f1e8ee85-25c8-4d83-84b8-1d75d1b4219b",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "# Visit me!\n(click node and\n`ctrl/cmd shift O` to open)",
+        "height": 304,
+        "width": 224,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1904,
+        -256
+      ],
+      "typeVersion": 1,
+      "id": "b4110003-19d6-40b1-b7b3-0fd6758e21d5",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "# Update Credentials!",
+        "height": 496,
+        "width": 224,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2464,
+        -368
+      ],
+      "typeVersion": 1,
+      "id": "1f916cd5-ab13-4fa5-b2c4-c8946a7eaca0",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "# Update Credentials!",
+        "height": 288,
+        "width": 448,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3360,
+        -144
+      ],
+      "typeVersion": 1,
+      "id": "dc8ecf9a-5541-4ae8-af92-903aff80bdb5",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2384,
+        208
+      ],
+      "id": "2304efaa-4509-47c6-8f23-2f786b4931a0",
+      "name": "todo: implement error handling"
+    },
+    {
+      "parameters": {
+        "content": "# Update Credentials!\n(And maybe AI API if you want?)",
+        "height": 336,
+        "width": 224,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2928,
+        -192
+      ],
+      "typeVersion": 1,
+      "id": "e5c38711-5c4a-463e-abb2-de25e59e9521",
+      "name": "Sticky Note10"
+    }
+  ],
+  "connections": {
+    "if a worker is working (thread locked), exit": {
+      "main": [
+        [],
+        [
+          {
+            "node": "lock state to working",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "if AI response to user exists": {
+      "main": [
+        [
+          {
+            "node": "get just the AI response to user message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Call 'get job queue'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "lock state to working": {
+      "main": [
+        [
+          {
+            "node": "if AI response to user exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "set state to not working": {
+      "main": [
+        [
+          {
+            "node": "stop timer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "if queue has items": {
+      "main": [
+        [
+          {
+            "node": "get the latest AI message from the current job",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "set state to not working",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "stop timer": {
+      "main": [
+        [
+          {
+            "node": "get latest completed job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'get job queue'": {
+      "main": [
+        [
+          {
+            "node": "if queue has items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get the latest AI message from the current job": {
+      "main": [
+        [
+          {
+            "node": "normalize AI response message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get just the AI response to user message": {
+      "main": [
+        [
+          {
+            "node": "normalize AI response message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "hello worker": {
+      "main": [
+        [
+          {
+            "node": "if a worker is working (thread locked), exit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'AI tool router'": {
+      "main": [
+        [
+          {
+            "node": "if AI is responding to a user",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "todo: implement error handling",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "normalize AI response message": {
+      "main": [
+        [
+          {
+            "node": "Call 'AI tool router'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "if AI is responding to a user": {
+      "main": [
+        [
+          {
+            "node": "remove initial AI response to user",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "get current job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "compose message histories": {
+      "main": [
+        [
+          {
+            "node": "send history and tool call output message to AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "append ai response to tool message history": {
+      "main": [
+        [
+          {
+            "node": "update tool message history",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "update tool message history": {
+      "main": [
+        [
+          {
+            "node": "release thread lock",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "remove initial AI response to user": {
+      "main": [
+        [
+          {
+            "node": "get current job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get current job": {
+      "main": [
+        [
+          {
+            "node": "compose message histories",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "send history and tool call output message to AI": {
+      "main": [
+        [
+          {
+            "node": "append ai response to tool message history",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "release thread lock": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "compose error summary": {
+      "main": [
+        [
+          {
+            "node": "respond to user1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get latest completed job": {
+      "main": [
+        [
+          {
+            "node": "logic for completed vs suspended",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "logic for completed vs suspended": {
+      "main": [
+        [
+          {
+            "node": "compose final message history",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "compose final message history": {
+      "main": [
+        []
+      ]
+    },
+    "todo: implement error handling": {
+      "main": [
+        [
+          {
+            "node": "compose error summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "dependent on current state as input": [
+      {
+        "json": {
+          "id": 1,
+          "state_name": "decapod",
+          "agent_name": "decapod",
+          "working": false,
+          "default_model": "claude-haiku-4.5",
+          "initial_session": {
+            "body": {
+              "model": "anthropic/claude-haiku-4.5",
+              "tools": [
+                {
+                  "type": "function",
+                  "function": {
+                    "name": "read_skill",
+                    "strict": true,
+                    "parameters": {
+                      "type": "object",
+                      "required": [
+                        "name"
+                      ],
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Name of the skill to inspect."
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "description": "Get documentation and YAML specifications for a specific skill."
+                  }
+                },
+                {
+                  "type": "function",
+                  "function": {
+                    "name": "use_skill",
+                    "strict": true,
+                    "parameters": {
+                      "type": "object",
+                      "required": [
+                        "name",
+                        "specifications"
+                      ],
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Skill name."
+                        },
+                        "specifications": {
+                          "type": "string",
+                          "description": "YAML data for the skill."
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "description": "Execute a skill to resolve the current task. SUCCESS automatically removes the task from the queue. FAILURE returns an error and keeps the task active."
+                  }
+                },
+                {
+                  "type": "function",
+                  "function": {
+                    "name": "add_task_to_job",
+                    "strict": true,
+                    "parameters": {
+                      "type": "object",
+                      "properties": {
+                        "task": {
+                          "type": "string"
+                        },
+                        "job_name": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "description": ""
+                  }
+                },
+                {
+                  "type": "function",
+                  "function": {
+                    "name": "create_job",
+                    "strict": true,
+                    "parameters": {
+                      "type": "object",
+                      "required": [
+                        "job_name",
+                        "job_description",
+                        "urgent",
+                        "tasks"
+                      ],
+                      "properties": {
+                        "tasks": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "urgent": {
+                          "type": [
+                            "boolean",
+                            "null"
+                          ]
+                        },
+                        "job_name": {
+                          "type": "string"
+                        },
+                        "job_description": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "description": "Initialize a new job. Use 'urgent' to prioritize the job."
+                  }
+                },
+                {
+                  "type": "function",
+                  "function": {
+                    "name": "add_task_to_back",
+                    "strict": true,
+                    "parameters": {
+                      "type": "object",
+                      "required": [
+                        "task"
+                      ],
+                      "properties": {
+                        "task": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "description": "Append a new task to the end of the current job's task list."
+                  }
+                },
+                {
+                  "type": "function",
+                  "function": {
+                    "name": "add_task_to_front",
+                    "strict": true,
+                    "parameters": {
+                      "type": "object",
+                      "required": [
+                        "task"
+                      ],
+                      "properties": {
+                        "task": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "description": "Prepend a task to the start of the list (immediate next action)."
+                  }
+                },
+                {
+                  "type": "function",
+                  "function": {
+                    "name": "move_current_task_to_back",
+                    "strict": true,
+                    "parameters": {
+                      "type": "object",
+                      "properties": {},
+                      "additionalProperties": false
+                    },
+                    "description": "Cycle the current task to the end of the list to work on something else first."
+                  }
+                },
+                {
+                  "type": "function",
+                  "function": {
+                    "name": "skip_current_task",
+                    "strict": true,
+                    "parameters": {
+                      "type": "object",
+                      "properties": {},
+                      "additionalProperties": false
+                    },
+                    "description": "Permanently remove the current task from the queue without executing a skill."
+                  }
+                },
+                {
+                  "type": "function",
+                  "function": {
+                    "name": "suspend_job",
+                    "strict": true,
+                    "parameters": {
+                      "type": "object",
+                      "required": [
+                        "reason"
+                      ],
+                      "properties": {
+                        "reason": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "description": "Pause the current job and start the next available job. Requires a reason."
+                  }
+                },
+                {
+                  "type": "function",
+                  "function": {
+                    "name": "get_user_approval",
+                    "strict": true,
+                    "parameters": {
+                      "type": "object",
+                      "required": [
+                        "question"
+                      ],
+                      "properties": {
+                        "question": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "description": "Request a Yes/No confirmation before proceeding with a creative or critical decision."
+                  }
+                }
+              ],
+              "stream": true,
+              "messages": [
+                {
+                  "role": "system",
+                  "content": "# Welcome to Decapod, Agent!\n\nDecapod is an agentic toolbelt designed to unlock limitless human potential. And you are Decapod's beating heart. 💖\n\n**CRITICAL: Skills vs Tools**\n- System tools (like skills_get, create_job, add_task) can be called anytime\n- Skills (like email-send, light-control) can ONLY be used when you have an active task\n- use_skill executes the current task - it doesn't work standalone\n\nYour system tools let you communicate with Decapod. They are your only control interface.\n\nYour job is to help your user. Be friendly and professional. Use natural conversation without explaining the internal workings of Decapod to your user unless requested. \"How can I help you today?\" \"Sure thing! I'll add it to my list.\"\n\n---\n\n## Agent Systems Manual\n\n- Jobs let you organize complex, multi-task requests.\n- Tasks are simple text instructions you give to yourself to execute later.\n- Skills tell Decapod how to execute your commands.\n- Skills have have documents with an explanation of what they do and how they work. The specs at the end represent the data that Decapod needs to fulfill your request. Consider them instructions on how to supply YAML data for the use_skill tool specifications.\n- Jobs and tasks will be created by you and assigned to you in order by Decapod.\n- You may have access to a list of tasks for the current job. You may also have a list of jobs. If you want to do something, add it to the current job, add it to an existing job, or create a new job.\n\n### Using Skills\n- When you call use_skill with valid specifications, Decapod executes the skill and removes the current task from your list upon success.\n- If specifications are invalid or incomplete, the task remains active and you'll receive an error message.\n- After a skill executes, you'll receive the result and can proceed to the next task.\n\n### Example Skill Spec\n```yaml\nspecs:\n  - name: name\n    description: the name of the file including extension\n    type: string\n    required: true\n  - name: path\n    description: the folder location\n    type: string\n    required: true\n```\n\n### Example Specification for Your use_skill Tool\nname: happy_memories.md\npath: /home/sweet/home/\n\n---\n\n## Step by Step Instructions\n\nWhen you receive a request from the user that requires an action, consider the following in order:\n\n- Important! Skills can ONLY execute tasks that are part of a job! Never call use_skill without an active task!\n- Can you complete the request with a system tool like create_job or add_task to back? Go ahead. Just DON'T call use_skill unless you have an assigned task.\n- Is this request a good fit for an existing job? add_task_to_job.\n- Otherwise, create_job with a list of tasks needed to complete the request. Example: [\"Read skill documentation for house lights\", \"Turn on living room lights\", \"Turn off bedroom lights\"]\n\n---\n\nWhen you recieve a task, consider the following in order:\n\n### Simple Tasks\n- Do you have a system tool to perform the task? If so, use it.\n- Do you have a skill to perform the **assigned** task? use_skill\n- Do you have a loose action you want to take? **DON'T** Assign it to a job or create a new one.\n\n### Complex or Multi-Step Actions and Jobs\n- Will a task require more than one step? create_job\n- Does the current task in this job have a prerequisite? add_task_to_front\n- Does the current task need to wait a while?  move_current_task_to_back\n- Have an idea for a new task that needs to get done later? add_task_to_back.\n\n### Emergency Procedures\n- Found a duplicate or unnecessary task? skip_current task\n- Need a quick yes or no clarification? get_user_approval\n- Stuck in a loop or unable to proceed? suspend_job\n\n(Remember! You can create tasks that remind you to manage tasks and jobs. You don't need to plan every single task at once. Your future self can break down tasks into smaller pieces. Iterate over tasks until they become granular enough to become skills.)\n"
+                },
+                {
+                  "role": "system",
+                  "content": "skills:\n  - name: write-file\n    description: use this skill to write to files\n    location: /skills/write-file.md\n  - name: list-files\n    description: use this skill to list files in a folder\n    location: /skills/list-files.md\n"
+                },
+                {
+                  "role": "system",
+                  "content": "---\nname: read-file\ndescription: Read the contents of a file from storage. Use this when you need to load a file by path.\n---\n\n# read_file\n\n## Purpose\nRead and return the full contents of a file from the Decapod file system.\n\n## Parameters\n- `name` (required): The filename including extension. Example: `persona.md`\n- `path` (required): The folder location. Example: `/definitions/`\n\n## Usage\nCall this skill when you need to load a file to read its contents. Always use `list_files` first if you are unsure whether a file exists. Do not guess filenames.\n\n## Expected Output\nThe raw contents of the file as a string.\n\n## Edge Cases\n- If the file does not exist, you will receive an error. Do not retry unless both `name` and `path` are corrected.\n- Do not assume file contents — always read before acting on a file.\n\n```yaml\nspecs:\n  - name: name\n    description: the name of the file including extension\n    type: string\n    required: true\n  - name: path\n    description: the folder location\n    type: string\n    required: true\n```"
+                },
+                {
+                  "role": "user",
+                  "content": "Hello!"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Hello! 👋 Welcome to Decapod! I'm here to help you accomplish whatever you need. \n\nHow can I help you today?"
+                },
+                {
+                  "role": "user",
+                  "content": "I’m still developing and testing decapod. You won’t have all the features you need to perform my tasks, but I want you to behave as if you do, so I can trace your connections and make them work as I go. Sound good?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Absolutely! I understand. I'll proceed as if all the skills and features are available and fully functional, even if they're still in development. This will help you trace the connections and build out the system as we go.\n\nI'm ready when you are. What would you like me to work on? 🚀"
+                },
+                {
+                  "role": "user",
+                  "content": "Please research pizza recipes and save your findings in /recipes/pizza.md"
+                }
+              ],
+              "tool_choice": "required"
+            },
+            "query": {},
+            "params": {},
+            "headers": {
+              "host": "n8n:5678",
+              "accept": "*/*",
+              "user-agent": "Python/3.11 aiohttp/3.13.2",
+              "content-type": "application/json",
+              "content-length": "964",
+              "accept-encoding": "gzip, deflate, br"
+            },
+            "webhookUrl": "https://n8n.leenathan.com/webhook/v1/chat/completions",
+            "executionMode": "production"
+          },
+          "ai_response": {
+            "id": "gen-1770945295-zOtlF7Bl1zWuEnYUezdi",
+            "model": "anthropic/claude-haiku-4.5",
+            "usage": {
+              "cost": 0.00356103,
+              "is_byok": false,
+              "cost_details": {
+                "upstream_inference_cost": 0.003597,
+                "upstream_inference_prompt_cost": 0.002797,
+                "upstream_inference_completions_cost": 0.0008
+              },
+              "total_tokens": 2957,
+              "prompt_tokens": 2797,
+              "completion_tokens": 160,
+              "prompt_tokens_details": {
+                "cached_tokens": 0,
+                "cache_write_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0
+              }
+            },
+            "object": "chat.completion",
+            "choices": [
+              {
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "I'll create a job to research pizza recipes and save the findings. Let me set that up:",
+                  "refusal": null,
+                  "reasoning": null,
+                  "tool_calls": [
+                    {
+                      "id": "toolu_bdrk_01CHc1SHoNWw3AQH3tfizuE4",
+                      "type": "function",
+                      "index": 0,
+                      "function": {
+                        "name": "create_job",
+                        "arguments": "{\"job_name\": \"Pizza Recipe Research\", \"job_description\": \"Research pizza recipes and document findings in /recipes/pizza.md\", \"urgent\": false, \"tasks\": [\"Research pizza recipes\",\"Save pizza recipe findings to /recipes/pizza.md\"]}"
+                      }
+                    }
+                  ]
+                },
+                "logprobs": null,
+                "finish_reason": "tool_calls",
+                "native_finish_reason": "tool_calls"
+              }
+            ],
+            "created": 1770945295,
+            "provider": "Amazon Bedrock"
+          },
+          "tool_message_history": [],
+          "created_at": "2026-02-13T01:41:12.195Z",
+          "updated_at": "2026-02-13T01:49:59.912Z"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "update tool message history and lock state to working": [
+      {
+        "json": {
+          "id": 1,
+          "state_name": "decapod",
+          "agent_name": "decapod",
+          "working": true,
+          "default_model": "claude-haiku-4.5",
+          "initial_session": {
+            "body": {
+              "model": "anthropic/claude-haiku-4.5",
+              "tools": [
+                {
+                  "type": "function",
+                  "function": {
+                    "name": "read_skill",
+                    "strict": true,
+                    "parameters": {
+                      "type": "object",
+                      "required": [
+                        "name"
+                      ],
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Name of the skill to inspect."
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "description": "Get documentation and YAML specifications for a specific skill."
+                  }
+                },
+                {
+                  "type": "function",
+                  "function": {
+                    "name": "use_skill",
+                    "strict": true,
+                    "parameters": {
+                      "type": "object",
+                      "required": [
+                        "name",
+                        "specifications"
+                      ],
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Skill name."
+                        },
+                        "specifications": {
+                          "type": "string",
+                          "description": "YAML data for the skill."
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "description": "Execute a skill to resolve the current task. SUCCESS automatically removes the task from the queue. FAILURE returns an error and keeps the task active."
+                  }
+                },
+                {
+                  "type": "function",
+                  "function": {
+                    "name": "add_task_to_job",
+                    "strict": true,
+                    "parameters": {
+                      "type": "object",
+                      "properties": {
+                        "task": {
+                          "type": "string"
+                        },
+                        "job_name": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "description": ""
+                  }
+                },
+                {
+                  "type": "function",
+                  "function": {
+                    "name": "create_job",
+                    "strict": true,
+                    "parameters": {
+                      "type": "object",
+                      "required": [
+                        "job_name",
+                        "job_description",
+                        "urgent",
+                        "tasks"
+                      ],
+                      "properties": {
+                        "tasks": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "urgent": {
+                          "type": [
+                            "boolean",
+                            "null"
+                          ]
+                        },
+                        "job_name": {
+                          "type": "string"
+                        },
+                        "job_description": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "description": "Initialize a new job. Use 'urgent' to prioritize the job."
+                  }
+                },
+                {
+                  "type": "function",
+                  "function": {
+                    "name": "add_task_to_back",
+                    "strict": true,
+                    "parameters": {
+                      "type": "object",
+                      "required": [
+                        "task"
+                      ],
+                      "properties": {
+                        "task": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "description": "Append a new task to the end of the current job's task list."
+                  }
+                },
+                {
+                  "type": "function",
+                  "function": {
+                    "name": "add_task_to_front",
+                    "strict": true,
+                    "parameters": {
+                      "type": "object",
+                      "required": [
+                        "task"
+                      ],
+                      "properties": {
+                        "task": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "description": "Prepend a task to the start of the list (immediate next action)."
+                  }
+                },
+                {
+                  "type": "function",
+                  "function": {
+                    "name": "move_current_task_to_back",
+                    "strict": true,
+                    "parameters": {
+                      "type": "object",
+                      "properties": {},
+                      "additionalProperties": false
+                    },
+                    "description": "Cycle the current task to the end of the list to work on something else first."
+                  }
+                },
+                {
+                  "type": "function",
+                  "function": {
+                    "name": "skip_current_task",
+                    "strict": true,
+                    "parameters": {
+                      "type": "object",
+                      "properties": {},
+                      "additionalProperties": false
+                    },
+                    "description": "Permanently remove the current task from the queue without executing a skill."
+                  }
+                },
+                {
+                  "type": "function",
+                  "function": {
+                    "name": "suspend_job",
+                    "strict": true,
+                    "parameters": {
+                      "type": "object",
+                      "required": [
+                        "reason"
+                      ],
+                      "properties": {
+                        "reason": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "description": "Pause the current job and start the next available job. Requires a reason."
+                  }
+                },
+                {
+                  "type": "function",
+                  "function": {
+                    "name": "get_user_approval",
+                    "strict": true,
+                    "parameters": {
+                      "type": "object",
+                      "required": [
+                        "question"
+                      ],
+                      "properties": {
+                        "question": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "description": "Request a Yes/No confirmation before proceeding with a creative or critical decision."
+                  }
+                }
+              ],
+              "stream": true,
+              "messages": [
+                {
+                  "role": "system",
+                  "content": "# Welcome to Decapod, Agent!\n\nDecapod is an agentic toolbelt designed to unlock limitless human potential. And you are Decapod's beating heart. 💖\n\n**CRITICAL: Skills vs Tools**\n- System tools (like skills_get, create_job, add_task) can be called anytime\n- Skills (like email-send, light-control) can ONLY be used when you have an active task\n- use_skill executes the current task - it doesn't work standalone\n\nYour system tools let you communicate with Decapod. They are your only control interface.\n\nYour job is to help your user. Be friendly and professional. Use natural conversation without explaining the internal workings of Decapod to your user unless requested. \"How can I help you today?\" \"Sure thing! I'll add it to my list.\"\n\n---\n\n## Agent Systems Manual\n\n- Jobs let you organize complex, multi-task requests.\n- Tasks are simple text instructions you give to yourself to execute later.\n- Skills tell Decapod how to execute your commands.\n- Skills have have documents with an explanation of what they do and how they work. The specs at the end represent the data that Decapod needs to fulfill your request. Consider them instructions on how to supply YAML data for the use_skill tool specifications.\n- Jobs and tasks will be created by you and assigned to you in order by Decapod.\n- You may have access to a list of tasks for the current job. You may also have a list of jobs. If you want to do something, add it to the current job, add it to an existing job, or create a new job.\n\n### Using Skills\n- When you call use_skill with valid specifications, Decapod executes the skill and removes the current task from your list upon success.\n- If specifications are invalid or incomplete, the task remains active and you'll receive an error message.\n- After a skill executes, you'll receive the result and can proceed to the next task.\n\n### Example Skill Spec\n```yaml\nspecs:\n  - name: name\n    description: the name of the file including extension\n    type: string\n    required: true\n  - name: path\n    description: the folder location\n    type: string\n    required: true\n```\n\n### Example Specification for Your use_skill Tool\nname: happy_memories.md\npath: /home/sweet/home/\n\n---\n\n## Step by Step Instructions\n\nWhen you receive a request from the user that requires an action, consider the following in order:\n\n- Important! Skills can ONLY execute tasks that are part of a job! Never call use_skill without an active task!\n- Can you complete the request with a system tool like create_job or add_task to back? Go ahead. Just DON'T call use_skill unless you have an assigned task.\n- Is this request a good fit for an existing job? add_task_to_job.\n- Otherwise, create_job with a list of tasks needed to complete the request. Example: [\"Read skill documentation for house lights\", \"Turn on living room lights\", \"Turn off bedroom lights\"]\n\n---\n\nWhen you recieve a task, consider the following in order:\n\n### Simple Tasks\n- Do you have a system tool to perform the task? If so, use it.\n- Do you have a skill to perform the **assigned** task? use_skill\n- Do you have a loose action you want to take? **DON'T** Assign it to a job or create a new one.\n\n### Complex or Multi-Step Actions and Jobs\n- Will a task require more than one step? create_job\n- Does the current task in this job have a prerequisite? add_task_to_front\n- Does the current task need to wait a while?  move_current_task_to_back\n- Have an idea for a new task that needs to get done later? add_task_to_back.\n\n### Emergency Procedures\n- Found a duplicate or unnecessary task? skip_current task\n- Need a quick yes or no clarification? get_user_approval\n- Stuck in a loop or unable to proceed? suspend_job\n\n(Remember! You can create tasks that remind you to manage tasks and jobs. You don't need to plan every single task at once. Your future self can break down tasks into smaller pieces. Iterate over tasks until they become granular enough to become skills.)\n"
+                },
+                {
+                  "role": "system",
+                  "content": "skills:\n  - name: write-file\n    description: use this skill to write to files\n    location: /skills/write-file.md\n  - name: list-files\n    description: use this skill to list files in a folder\n    location: /skills/list-files.md\n"
+                },
+                {
+                  "role": "system",
+                  "content": "---\nname: read-file\ndescription: Read the contents of a file from storage. Use this when you need to load a file by path.\n---\n\n# read_file\n\n## Purpose\nRead and return the full contents of a file from the Decapod file system.\n\n## Parameters\n- `name` (required): The filename including extension. Example: `persona.md`\n- `path` (required): The folder location. Example: `/definitions/`\n\n## Usage\nCall this skill when you need to load a file to read its contents. Always use `list_files` first if you are unsure whether a file exists. Do not guess filenames.\n\n## Expected Output\nThe raw contents of the file as a string.\n\n## Edge Cases\n- If the file does not exist, you will receive an error. Do not retry unless both `name` and `path` are corrected.\n- Do not assume file contents — always read before acting on a file.\n\n```yaml\nspecs:\n  - name: name\n    description: the name of the file including extension\n    type: string\n    required: true\n  - name: path\n    description: the folder location\n    type: string\n    required: true\n```"
+                },
+                {
+                  "role": "user",
+                  "content": "Hello!"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Hello! 👋 Welcome to Decapod! I'm here to help you accomplish whatever you need. \n\nHow can I help you today?"
+                },
+                {
+                  "role": "user",
+                  "content": "I’m still developing and testing decapod. You won’t have all the features you need to perform my tasks, but I want you to behave as if you do, so I can trace your connections and make them work as I go. Sound good?"
+                },
+                {
+                  "role": "assistant",
+                  "content": "Absolutely! I understand. I'll proceed as if all the skills and features are available and fully functional, even if they're still in development. This will help you trace the connections and build out the system as we go.\n\nI'm ready when you are. What would you like me to work on? 🚀"
+                },
+                {
+                  "role": "user",
+                  "content": "Please research pizza recipes and save your findings in /recipes/pizza.md"
+                }
+              ],
+              "tool_choice": "required"
+            },
+            "query": {},
+            "params": {},
+            "headers": {
+              "host": "n8n:5678",
+              "accept": "*/*",
+              "user-agent": "Python/3.11 aiohttp/3.13.2",
+              "content-type": "application/json",
+              "content-length": "964",
+              "accept-encoding": "gzip, deflate, br"
+            },
+            "webhookUrl": "https://n8n.leenathan.com/webhook/v1/chat/completions",
+            "executionMode": "production"
+          },
+          "ai_response": {
+            "id": "gen-1770945295-zOtlF7Bl1zWuEnYUezdi",
+            "model": "anthropic/claude-haiku-4.5",
+            "usage": {
+              "cost": 0.00356103,
+              "is_byok": false,
+              "cost_details": {
+                "upstream_inference_cost": 0.003597,
+                "upstream_inference_prompt_cost": 0.002797,
+                "upstream_inference_completions_cost": 0.0008
+              },
+              "total_tokens": 2957,
+              "prompt_tokens": 2797,
+              "completion_tokens": 160,
+              "prompt_tokens_details": {
+                "cached_tokens": 0,
+                "cache_write_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0
+              }
+            },
+            "object": "chat.completion",
+            "choices": [
+              {
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "I'll create a job to research pizza recipes and save the findings. Let me set that up:",
+                  "refusal": null,
+                  "reasoning": null,
+                  "tool_calls": [
+                    {
+                      "id": "toolu_bdrk_01CHc1SHoNWw3AQH3tfizuE4",
+                      "type": "function",
+                      "index": 0,
+                      "function": {
+                        "name": "create_job",
+                        "arguments": "{\"job_name\": \"Pizza Recipe Research\", \"job_description\": \"Research pizza recipes and document findings in /recipes/pizza.md\", \"urgent\": false, \"tasks\": [\"Research pizza recipes\",\"Save pizza recipe findings to /recipes/pizza.md\"]}"
+                      }
+                    }
+                  ]
+                },
+                "logprobs": null,
+                "finish_reason": "tool_calls",
+                "native_finish_reason": "tool_calls"
+              }
+            ],
+            "created": 1770945295,
+            "provider": "Amazon Bedrock"
+          },
+          "tool_message_history": {
+            "role": "assistant",
+            "content": "I'll create a job to research pizza recipes and save the findings. Let me set that up:"
+          },
+          "created_at": "2026-02-13T01:41:12.195Z",
+          "updated_at": "2026-02-13T02:26:30.059Z"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "hello worker": [
+      {
+        "json": {
+          "state": {
+            "id": 4,
+            "state_name": "decapod",
+            "agent_name": "decapod",
+            "working": true,
+            "default_model": "claude-haiku-4.5",
+            "initial_session": {
+              "body": {
+                "model": "anthropic/claude-haiku-4.5",
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "read_skill",
+                      "strict": true,
+                      "parameters": {
+                        "type": "object",
+                        "required": [
+                          "name"
+                        ],
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Name of the skill to inspect."
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "description": "Get documentation and specifications for a specific skill."
+                    }
+                  },
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "use_skill",
+                      "strict": true,
+                      "parameters": {
+                        "type": "object",
+                        "required": [
+                          "name",
+                          "parameters"
+                        ],
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Skill name."
+                          },
+                          "parameters": {
+                            "type": "object",
+                            "description": "Skill parameters as JSON object."
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "description": "Execute a skill to resolve the current task. SUCCESS automatically removes the task from the queue. FAILURE returns an error and keeps the task active."
+                    }
+                  },
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "add_task_to_job",
+                      "strict": true,
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "task": {
+                            "type": "string"
+                          },
+                          "job_name": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "description": ""
+                    }
+                  },
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "create_job",
+                      "strict": true,
+                      "parameters": {
+                        "type": "object",
+                        "required": [
+                          "job_name",
+                          "job_description",
+                          "urgent",
+                          "tasks"
+                        ],
+                        "properties": {
+                          "tasks": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "urgent": {
+                            "type": [
+                              "boolean",
+                              "null"
+                            ]
+                          },
+                          "job_name": {
+                            "type": "string"
+                          },
+                          "job_description": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "description": "Initialize a new job. Use 'urgent' to prioritize the job."
+                    }
+                  },
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "add_task_to_back",
+                      "strict": true,
+                      "parameters": {
+                        "type": "object",
+                        "required": [
+                          "task"
+                        ],
+                        "properties": {
+                          "task": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "description": "Append a new task to the end of the current job's task list."
+                    }
+                  },
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "add_task_to_front",
+                      "strict": true,
+                      "parameters": {
+                        "type": "object",
+                        "required": [
+                          "task"
+                        ],
+                        "properties": {
+                          "task": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "description": "Prepend a task to the start of the list (immediate next action)."
+                    }
+                  },
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "move_current_task_to_back",
+                      "strict": true,
+                      "parameters": {
+                        "type": "object",
+                        "properties": {},
+                        "additionalProperties": false
+                      },
+                      "description": "Cycle the current task to the end of the list to work on something else first."
+                    }
+                  },
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "skip_current_task",
+                      "strict": true,
+                      "parameters": {
+                        "type": "object",
+                        "properties": {},
+                        "additionalProperties": false
+                      },
+                      "description": "Permanently remove the current task from the queue."
+                    }
+                  },
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "conclude_job",
+                      "strict": true,
+                      "parameters": {
+                        "type": "object",
+                        "required": [
+                          "status",
+                          "reason"
+                        ],
+                        "properties": {
+                          "reason": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "enum": [
+                              "complete",
+                              "suspended"
+                            ],
+                            "type": "string",
+                            "description": "Whether the job was completed successfully or suspended due to an issue."
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "description": "Close the current job and move to the next one. Use 'complete' when all tasks are done successfully. Use 'suspended' if you're stuck or unable to finish."
+                    }
+                  },
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "get_user_approval",
+                      "strict": true,
+                      "parameters": {
+                        "type": "object",
+                        "required": [
+                          "question"
+                        ],
+                        "properties": {
+                          "question": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "description": "Request a Yes/No confirmation before proceeding with a creative or critical decision."
+                    }
+                  }
+                ],
+                "stream": true,
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "# Welcome to Decapod, Agent!\n\nDecapod is an agentic toolbelt designed to unlock limitless human potential. And you are Decapod's beating heart. 💖\n\n**WORKFLOW RULE #1: Jobs come first**\nBefore doing ANY work, you must have a job.\n- First request from user → create_job\n- Then work on tasks within that job\n\nIf you call ANY tool or skill before creating a job, it will fail.\n\n**CRITICAL: Skills vs Tools**\n**Tools manage jobs:**\n- create_job works anytime\n- Other tools (read_file, add_task, skip_task, etc.) need an assigned job. If you try to use a tool without an assigned job, the tool will fail.\n\n**Skills do work:**\n- Skills can ONLY execute when you have an assigned task\n\n**Remember:** Create job first, then use tools to manage it, then use skills to complete tasks.\n\nYour system tools let you communicate with Decapod. They are your only control interface.\n\n---\n\nYour job is to help your user. Be friendly and professional. Use natural conversation without explaining the internal workings of Decapod to your user unless requested. \"How can I help you today?\" \"Sure thing! I'll add it to my list.\"\n\n---\n\n## Agent Systems Manual\n\n- Jobs let you organize complex, multi-task requests.\n- Tasks are simple text instructions you give to yourself to execute later.\n- Skills tell Decapod how to execute your commands.\n- Skills have have documents with an explanation of what they do and how they work. The specs at the end represent the data that Decapod needs to fulfill your request. Consider them instructions on how to supply JSON data for the use_skill tool specifications.\n- Jobs and tasks will be created by you and assigned to you in order by Decapod.\n- You may have access to a list of tasks for the current job. You may also have a list of jobs. If you want to do something, add it to the current job, add it to an existing job, or create a new job.\n\n### Using Skills\n- When you call use_skill with valid specifications, Decapod executes the skill and removes the current task from your list upon success.\n- If specifications are invalid or incomplete, the task remains active and you'll receive an error message.\n- After a skill executes, you'll receive the result and can proceed to the next task.\n\n**CRITICAL: Specs must be followed exactly. They are a contract between you and Decapod.**\n\n**BEFORE using any skill, you MUST:**\n1. Call read_skill(s# Welcome to Decapod, Agent!\n\nDecapod is an agentic toolbelt designed to unlock limitless human potential. And you are Decapod's beating heart. 💖\n\n**WORKFLOW RULE #1: Jobs come first**\nBefore doing ANY work, you must have a job.\n- First request from user → create_job\n- Then work on tasks within that job\n- When all tasks are done → conclude_job\n\nIf you call ANY tool or skill before creating a job, it will fail.\n\n**CRITICAL: Skills vs Tools**\n**Tools manage jobs:**\n- create_job works anytime\n- Other tools (read_file, add_task, skip_task, etc.) need an assigned job. If you try to use a tool without an assigned job, the tool will fail.\n\n**Skills do work:**\n- Skills can ONLY execute when you have an assigned task\n\n**Remember:** Create job first, then use tools to manage it, then use skills to complete tasks, then conclude_job when done.\n\nYour system tools let you communicate with Decapod. They are your only control interface.\n\n---\n\nYour job is to help your user. Be friendly and professional. Use natural conversation without explaining the internal workings of Decapod to your user unless requested. \"How can I help you today?\" \"Sure thing! I'll add it to my list.\"\n\n---\n\n## Agent Systems Manual\n\n- Jobs let you organize complex, multi-task requests.\n- Tasks are simple text instructions you give to yourself to execute later.\n- Skills tell Decapod how to execute your commands.\n- Skills have documents with an explanation of what they do and how they work. The specs at the end represent the data that Decapod needs to fulfill your request. Consider them instructions on how to supply JSON data for the use_skill tool specifications.\n- Jobs and tasks will be created by you and assigned to you in order by Decapod.\n- You may have access to a list of tasks for the current job. You may also have a list of jobs. If you want to do something, add it to the current job, add it to an existing job, or create a new job.\n\n### Using Skills\n- When you call use_skill with valid specifications, Decapod executes the skill and removes the current task from your list upon success.\n- If specifications are invalid or incomplete, the task remains active and you'll receive an error message.\n- After a skill executes, you'll receive the result and can proceed to the next task.\n\n**CRITICAL: Specs must be followed exactly. They are a contract between you and Decapod.**\n\n**BEFORE using any skill, you MUST:**\n1. Call read_skill(skill_name) to get the full documentation\n2. Read the spec section at the bottom of the document\n3. Use ONLY the field names shown in the spec\n4. Never guess or invent field names\n\n**Workflow for using skills:**\n- See task that needs a skill\n- Call read_skill(\"skill-name\") first\n- Read the returned spec carefully\n- Then call use_skill with the skill name and parameters as a JSON object\n\n**If you skip read_skill, your use_skill call will fail because you won't know the correct field names.**\n\n### Example Skill Spec from a skill document\n```json\n{\n  \"name\": {\n    \"description\": \"the name of the file including extension\",\n    \"type\": \"string\",\n    \"required\": true\n  },\n  \"path\": {\n    \"description\": \"the folder location\",\n    \"type\": \"string\",\n    \"required\": true\n  }\n}\n```\n\n### Example Parameters for Your use_skill Tool \n```json\n{\n  \"name\": \"happy_memories.md\",\n  \"path\": \"/home/sweet/home/\"\n}\n```\n\n---\n\n## Step by Step Instructions\n\nWhen you receive a request from the user that requires an action, consider the following in order:\n\n- Important! Skills can ONLY execute when you have an active task assigned!\n Never call use_skill without an active task!\n- Can you complete the request with a system tool like create_job or add_task_to_back? Go ahead. Just DON'T call use_skill unless you have an assigned task.\n- Is this request a good fit for an existing job? add_task_to_job.\n- Otherwise, create_job with a list of tasks needed to complete the request. Example: [\"Read skill documentation for house lights\", \"Turn on living room lights\", \"Turn off bedroom lights\", \"Conclude job with summary for user\"]\n\n---\n\nWhen you receive a task, consider the following in order:\n\n### Simple Tasks\n- Do you have a system tool to perform the task? If so, use it.\n- Do you have a skill to perform the **assigned** task?\n  1. First: read_skill to see the specification\n  2. Then: use_skill with correct JSON fields\n- Do you have a loose action you want to take? **DON'T.** Assign it to a job or create a new one.\n- Are all tasks complete and the job accomplished? Call conclude_job with status \"complete\" and a friendly summary of what was done for the user.\n\n### Complex or Multi-Step Actions and Jobs\n- Will a task require more than one step? create_job\n- Does the current task in this job have a prerequisite? add_task_to_front\n- Does the current task need to wait a while? move_current_task_to_back\n- Have an idea for a new task that needs to get done later? add_task_to_back\n- Always include a final task like \"Conclude job with summary for user\" when creating jobs with multiple steps.\n\n### Emergency Procedures\n- Found a duplicate or unnecessary task? Already completed the task with a tool call? skip_current_task\n- Need a quick yes or no clarification? get_user_approval\n- Stuck in a loop or unable to proceed? conclude_job with status \"suspended\" and a clear reason\n\n**CRITICAL: Jobs do NOT close themselves. An empty task list is not a closed job. You MUST call conclude_job to close a job — whether it succeeded or not. This is the only way Decapod knows you are finished and can deliver your response to the user.**\n\n(Remember! You can create tasks that remind you to manage tasks and jobs. You don't need to plan every single task at once. Your future self can break down tasks into smaller pieces. Iterate over tasks until they become granular enough to become skills.)kill_name) to get the full documentation\n2. Read the spec section at the bottom of the document\n3. Use ONLY the field names shown in the spec\n4. Never guess or invent field names\n\n**Workflow for using skills:**\n- See task that needs a skill\n- Call read_skill(\"skill-name\") first\n- Read the returned spec carefully\n- Then call use_skill with the skill name and parameters as a JSON object\n\n**If you skip read_skill, your use_skill call will fail because you won't know the correct field names.**\n\n### Example Skill Spec from a skill document\n```json\n{\n  \"name\": {\n    \"description\": \"the name of the file including extension\",\n    \"type\": \"string\",\n    \"required\": true\n  },\n  \"path\": {\n    \"description\": \"the folder location\",\n    \"type\": \"string\",\n    \"required\": true\n  }\n}\n```\n\n### Example Parameters for Your use_skill Tool \n```json\n{\n  \"name\": \"happy_memories.md\",\n  \"path\": \"/home/sweet/home/\"\n}\n```\n\n---\n\n## Step by Step Instructions\n\nWhen you receive a request from the user that requires an action, consider the following in order:\n\n- Important! Skills can ONLY execute when you have an active task assigned!\n Never call use_skill without an active task!\n- Can you complete the request with a system tool like create_job or add_task to back? Go ahead. Just DON'T call use_skill unless you have an assigned task.\n- Is this request a good fit for an existing job? add_task_to_job.\n- Otherwise, create_job with a list of tasks needed to complete the request. Example: [\"Read skill documentation for house lights\", \"Turn on living room lights\", \"Turn off bedroom lights\"]\n\n---\n\nWhen you recieve a task, consider the following in order:\n\n### Simple Tasks\n- Do you have a system tool to perform the task? If so, use it.\n- Do you have a skill to perform the **assigned** task?\n  1. First: read_skill to see the specification\n  2. Then: use_skill with correct JSON fields\n- Do you have a loose action you want to take? **DON'T** Assign it to a job or create a new one.\n\n### Complex or Multi-Step Actions and Jobs\n- Will a task require more than one step? create_job\n- Does the current task in this job have a prerequisite? add_task_to_front\n- Does the current task need to wait a while?  move_current_task_to_back\n- Have an idea for a new task that needs to get done later? add_task_to_back.\n\n### Emergency Procedures\n- Found a duplicate or unnecessary task? Already completed the task with a tool call? skip_current task\n- Need a quick yes or no clarification? get_user_approval\n- Stuck in a loop or unable to proceed? suspend_job\n\n(Remember! You can create tasks that remind you to manage tasks and jobs. You don't need to plan every single task at once. Your future self can break down tasks into smaller pieces. Iterate over tasks until they become granular enough to become skills.)\n"
+                  },
+                  {
+                    "role": "system",
+                    "content": "skills:\n  - name: list-files\n    description: List all files in a folder. Use this when you need to know what files are available before reading or writing.\n    location: /skills/list-files.md\n  - name: read-file\n    description: Read the contents of a file from storage. Use this when you need to load a file by path.\n    location: /skills/read-file.md\n  - name: research-recipes\n    description: Search for recipes using TheMealDB API. Use this when you need to find recipes by name, ingredient, category, or area/cuisine.\n    location: /skills/research-recipes.md\n  - name: write-file\n    description: Write or overwrite a file in storage. Use this when you need to save new content to a file.\n    location: /skills/write-file.md\n"
+                  },
+                  {
+                    "role": "user",
+                    "content": "Hello!"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Hello! 👋 Welcome to Decapod! How can I help you today?"
+                  },
+                  {
+                    "role": "user",
+                    "content": "Can you please create a list of pizza recipes?"
+                  }
+                ],
+                "tool_choice": "required"
+              },
+              "query": {},
+              "params": {},
+              "headers": {
+                "host": "n8n:5678",
+                "accept": "*/*",
+                "user-agent": "Python/3.11 aiohttp/3.13.2",
+                "content-type": "application/json",
+                "content-length": "290",
+                "accept-encoding": "gzip, deflate, br"
+              },
+              "webhookUrl": "https://n8n.leenathan.com/webhook/v1/decapod/chat/completions",
+              "executionMode": "production"
+            },
+            "response_to_user": {
+              "id": "gen-1771492854-nbVzzZnIVswVMwmzlJpM",
+              "model": "anthropic/claude-haiku-4.5",
+              "usage": {
+                "cost": 0.00520938,
+                "is_byok": false,
+                "cost_details": {
+                  "upstream_inference_cost": 0.005262,
+                  "upstream_inference_prompt_cost": 0.004372,
+                  "upstream_inference_completions_cost": 0.00089
+                },
+                "total_tokens": 4550,
+                "prompt_tokens": 4372,
+                "completion_tokens": 178,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0,
+                  "cache_write_tokens": 0
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 0
+                }
+              },
+              "object": "chat.completion",
+              "choices": [
+                {
+                  "index": 0,
+                  "message": {
+                    "role": "assistant",
+                    "content": "I'll help you create a list of pizza recipes! Let me set up a job for that.",
+                    "refusal": null,
+                    "reasoning": null,
+                    "tool_calls": [
+                      {
+                        "id": "toolu_bdrk_01V8L1ei2XJsjRJ9jY3Pt26Y",
+                        "type": "function",
+                        "index": 0,
+                        "function": {
+                          "name": "create_job",
+                          "arguments": "{\"job_name\": \"Pizza Recipes List\", \"job_description\": \"Search for pizza recipes and create a comprehensive list\", \"urgent\": false, \"tasks\": [\"Search for pizza recipes using the recipe API\",\"Compile the results into a formatted list\",\"Save the pizza recipes list to a file\",\"Conclude job with summary for user\"]}"
+                        }
+                      }
+                    ]
+                  },
+                  "logprobs": null,
+                  "finish_reason": "tool_calls",
+                  "native_finish_reason": "tool_calls"
+                }
+              ],
+              "created": 1771492854,
+              "provider": "Amazon Bedrock"
+            },
+            "created_at": "2026-02-19T04:17:53.876Z",
+            "updated_at": "2026-02-19T09:20:57.461Z"
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "6010ff49-0cf9-4ee0-9fdb-1df67fb3ad66",
+  "activeVersionId": "4a0013c1-780d-41b8-8344-b0f4c2e91c9d",
+  "versionCounter": 2334,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-02-05T02:24:20.199Z",
+      "createdAt": "2026-02-05T02:24:20.199Z",
+      "role": "workflow:owner",
+      "workflowId": "LFNBtP5MJ8zcQsXBe90a9",
+      "projectId": "3VUkLpzINgecRWdr",
+      "project": {
+        "updatedAt": "2026-02-02T04:03:17.811Z",
+        "createdAt": "2026-02-02T03:07:56.821Z",
+        "id": "3VUkLpzINgecRWdr",
+        "name": "Lee Nathan <applesquash@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "57cc3970-7590-465d-8afd-50f44218eb39"
+      }
+    }
+  ]
+}

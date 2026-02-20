@@ -1,0 +1,189 @@
+{
+  "updatedAt": "2026-02-20T06:40:34.413Z",
+  "createdAt": "2026-02-19T22:07:33.184Z",
+  "id": "6pPasr6Ko_tb2FGIsX6J8",
+  "name": "quick connect Telegram to agent",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "41b6f2db-bc9b-49e1-98f3-3b25f1f80bc8",
+      "name": "Telegram Trigger",
+      "webhookId": "2e3fe81b-e330-493b-8b59-4b75fd35452f",
+      "credentials": {
+        "telegramApi": {
+          "id": "MXwotiUSsMd5EQsY",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "1dc8875b-4993-4a6e-bc33-3cb083527bfe",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "chatId": "1722677531",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        560,
+        0
+      ],
+      "id": "54163cb6-2efa-4107-807c-d6be2e927977",
+      "name": "Send a text message",
+      "webhookId": "45666a0e-e54f-4713-bcd6-0dc540c38589",
+      "credentials": {
+        "telegramApi": {
+          "id": "MXwotiUSsMd5EQsY",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "xiaomi/mimo-v2-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        208,
+        192
+      ],
+      "id": "61d5b7a3-4e32-4b43-896e-ea5e61f089c7",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "tCnBW8DyX2OD1ciT",
+          "name": "OpenRouter account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Telegram Trigger": [
+      {
+        "json": {
+          "update_id": 286901228,
+          "message": {
+            "message_id": 2,
+            "from": {
+              "id": 1722677531,
+              "is_bot": false,
+              "first_name": "Lee",
+              "last_name": "Nathan",
+              "language_code": "en"
+            },
+            "chat": {
+              "id": 1722677531,
+              "first_name": "Lee",
+              "last_name": "Nathan",
+              "type": "private"
+            },
+            "date": 1771539333,
+            "text": "Hello"
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "87ff1967-4511-4b6d-9e4a-b9cc85815af1",
+  "activeVersionId": "87ff1967-4511-4b6d-9e4a-b9cc85815af1",
+  "versionCounter": 28,
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-02-19T22:07:33.187Z",
+      "createdAt": "2026-02-19T22:07:33.187Z",
+      "role": "workflow:owner",
+      "workflowId": "6pPasr6Ko_tb2FGIsX6J8",
+      "projectId": "3VUkLpzINgecRWdr",
+      "project": {
+        "updatedAt": "2026-02-02T04:03:17.811Z",
+        "createdAt": "2026-02-02T03:07:56.821Z",
+        "id": "3VUkLpzINgecRWdr",
+        "name": "Lee Nathan <applesquash@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "57cc3970-7590-465d-8afd-50f44218eb39"
+      }
+    }
+  ]
+}

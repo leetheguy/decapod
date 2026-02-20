@@ -1,0 +1,161 @@
+{
+  "updatedAt": "2026-02-20T07:33:41.892Z",
+  "createdAt": "2026-02-15T00:19:16.103Z",
+  "id": "5kppUnbjgsqQAVeHTxLxd",
+  "name": "get job queue ✅✅✅",
+  "description": "This ensures the same formula for building the job queue is followed every time.\n\n- No suspended, complete, or archived jobs.\n- Order by priority, ASC and created_at ASC.\n- Same limit of x every time.",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "7a4eeb31-5cea-464c-a33e-e83dff8b2c36",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "job_queue",
+          "mode": "list",
+          "cachedResultName": "job_queue"
+        },
+        "limit": 20,
+        "where": {
+          "values": [
+            {
+              "column": "suspended",
+              "value": "false"
+            },
+            {
+              "column": "complete",
+              "value": "false"
+            },
+            {
+              "column": "archived",
+              "value": "false"
+            }
+          ]
+        },
+        "sort": {
+          "values": [
+            {
+              "column": "priority"
+            },
+            {
+              "column": "created_at"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        224,
+        0
+      ],
+      "id": "fb35c8b9-ade2-46e4-921c-d5febf882fe3",
+      "name": "get job queue",
+      "credentials": {
+        "postgres": {
+          "id": "0UtciEE4IUCD05zk",
+          "name": "decapod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## This gets its own workflow because it's such a common query and consistency is desired.",
+        "height": 304,
+        "width": 448,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -64,
+        -144
+      ],
+      "typeVersion": 1,
+      "id": "ec6fe4d0-9848-492d-8b68-513304057557",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n# Update Credentials!",
+        "height": 336,
+        "width": 224,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        160,
+        -16
+      ],
+      "typeVersion": 1,
+      "id": "c928535d-acab-4fb0-8e33-8a0b9966349d",
+      "name": "Sticky Note"
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "get job queue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "f4645919-2064-4afc-bdff-06e2a407ac4d",
+  "activeVersionId": "f4645919-2064-4afc-bdff-06e2a407ac4d",
+  "versionCounter": 64,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-02-15T00:19:16.107Z",
+      "createdAt": "2026-02-15T00:19:16.107Z",
+      "role": "workflow:owner",
+      "workflowId": "5kppUnbjgsqQAVeHTxLxd",
+      "projectId": "3VUkLpzINgecRWdr",
+      "project": {
+        "updatedAt": "2026-02-02T04:03:17.811Z",
+        "createdAt": "2026-02-02T03:07:56.821Z",
+        "id": "3VUkLpzINgecRWdr",
+        "name": "Lee Nathan <applesquash@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "57cc3970-7590-465d-8afd-50f44218eb39"
+      }
+    }
+  ]
+}

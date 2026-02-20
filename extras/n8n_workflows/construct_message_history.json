@@ -1,0 +1,318 @@
+{
+  "updatedAt": "2026-02-20T07:30:58.040Z",
+  "createdAt": "2026-02-11T00:58:30.330Z",
+  "id": "ELnzCqmnbohzXgqG",
+  "name": "construct message history 📄➕📄➕📄",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -16,
+        16
+      ],
+      "id": "d6311c58-5e3e-40bc-ba3a-f4bec424ebea",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {
+          "keepSource": "json"
+        }
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        880,
+        16
+      ],
+      "id": "4758f16b-bd3b-4d42-9469-bb8aaf35d264",
+      "name": "convert file contents to JSON"
+    },
+    {
+      "parameters": {
+        "jsCode": "const output = $('When Executed by Another Workflow').first().json;\n\nlet messages = $('When Executed by Another Workflow').first().json.body.messages;\n\nlet persona = $('convert file contents to JSON').all().map(item => {\n  let content = item.json.data || '';\n  return {\n      role: 'system',\n      content: content\n  };\n});\n\n// let output = $input.first().json;\noutput.body.messages = [...persona, ...messages];\n\nreturn output;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        432,
+        224
+      ],
+      "id": "c7dd4d6f-e9c9-4999-ad6e-7a007db7a966",
+      "name": "inject persona into message history",
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "bucketName": "decapod",
+        "fileKey": "={{ $json.Key }}"
+      },
+      "type": "n8n-nodes-base.s3",
+      "typeVersion": 1,
+      "position": [
+        656,
+        16
+      ],
+      "id": "0d55f473-8ca6-470f-8478-61308a2945d8",
+      "name": "download persona files",
+      "credentials": {
+        "s3": {
+          "id": "Eb3VK48Bqchm37fk",
+          "name": "internal minio"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "bucket",
+        "operation": "search",
+        "bucketName": "decapod",
+        "returnAll": true,
+        "additionalFields": {
+          "prefix": "=agents/{{ $json.agent_name }}/definitions"
+        }
+      },
+      "type": "n8n-nodes-base.s3",
+      "typeVersion": 1,
+      "position": [
+        432,
+        16
+      ],
+      "id": "9fdfffcc-85ac-4bcf-8f39-bc572a21f8a7",
+      "name": "get agent's persona definitions",
+      "credentials": {
+        "s3": {
+          "id": "Eb3VK48Bqchm37fk",
+          "name": "internal minio"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## acquire necessary data",
+        "height": 208,
+        "width": 1472,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -400,
+        -16
+      ],
+      "typeVersion": 1,
+      "id": "939dcd39-60d6-44c9-a63b-e604d9ad3100",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## return utility and persona instructions\n",
+        "height": 208,
+        "width": 1472,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -400,
+        192
+      ],
+      "typeVersion": 1,
+      "id": "e08b669c-3c68-4862-956b-4fd827e4f274",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "jsCode": "let output = $input.first().json;\noutput.body.tool_choice = \"required\"\n\nreturn output;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        656,
+        224
+      ],
+      "id": "2550bbaf-3ced-44eb-93d6-1ee5fcf6b41c",
+      "name": "require tool calls"
+    },
+    {
+      "parameters": {
+        "content": "# Update Credentials!",
+        "height": 336,
+        "width": 704,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        128,
+        -160
+      ],
+      "typeVersion": 1,
+      "id": "17271b27-bc65-406a-94b5-7545bb00002f",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "decapod_state",
+          "mode": "list",
+          "cachedResultName": "decapod_state"
+        },
+        "limit": 1,
+        "where": {
+          "values": [
+            {
+              "column": "state_name",
+              "value": "decapod"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        192,
+        16
+      ],
+      "id": "c5168521-5825-4485-b8a8-95bd160a45fa",
+      "name": "get the current state",
+      "credentials": {
+        "postgres": {
+          "id": "0UtciEE4IUCD05zk",
+          "name": "decapod"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "get the current state",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "convert file contents to JSON": {
+      "main": [
+        [
+          {
+            "node": "inject persona into message history",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "inject persona into message history": {
+      "main": [
+        [
+          {
+            "node": "require tool calls",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "download persona files": {
+      "main": [
+        [
+          {
+            "node": "convert file contents to JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get agent's persona definitions": {
+      "main": [
+        [
+          {
+            "node": "download persona files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "require tool calls": {
+      "main": [
+        []
+      ]
+    },
+    "get the current state": {
+      "main": [
+        [
+          {
+            "node": "get agent's persona definitions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "state_name": "decapod"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "96b4cee4-c038-4cfc-95fe-5a96a0b3223c",
+  "activeVersionId": "96b4cee4-c038-4cfc-95fe-5a96a0b3223c",
+  "versionCounter": 307,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-02-11T00:58:30.337Z",
+      "createdAt": "2026-02-11T00:58:30.337Z",
+      "role": "workflow:owner",
+      "workflowId": "ELnzCqmnbohzXgqG",
+      "projectId": "3VUkLpzINgecRWdr",
+      "project": {
+        "updatedAt": "2026-02-02T04:03:17.811Z",
+        "createdAt": "2026-02-02T03:07:56.821Z",
+        "id": "3VUkLpzINgecRWdr",
+        "name": "Lee Nathan <applesquash@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "57cc3970-7590-465d-8afd-50f44218eb39"
+      }
+    }
+  ]
+}

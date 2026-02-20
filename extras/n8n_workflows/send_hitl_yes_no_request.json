@@ -1,0 +1,94 @@
+{
+  "updatedAt": "2026-02-20T07:34:31.263Z",
+  "createdAt": "2026-02-14T08:16:18.865Z",
+  "id": "2dVoQyklAUkyhT6X",
+  "name": "send HITL yes/no request 👍👎",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "id": "c055762a-8fe7-4141-a639-df2372f30060",
+      "typeVersion": 1.1,
+      "name": "When Executed by Another Workflow",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        272,
+        352
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "b5942df6-0160-4ef7-965d-57583acdc8aa",
+      "name": "Replace me with your logic",
+      "type": "n8n-nodes-base.noOp",
+      "position": [
+        496,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### TODO! Sorry! Or not?\nIf you're reading this, you've dug deep.\nTry implementing this yourself!",
+        "height": 256,
+        "width": 464,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        208,
+        256
+      ],
+      "typeVersion": 1,
+      "id": "9752c9fa-dfbf-4465-b2b0-818f9248d51f",
+      "name": "Sticky Note2"
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Replace me with your logic",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "bca382bb-345f-4019-9c38-1a33bb810823",
+  "activeVersionId": "bca382bb-345f-4019-9c38-1a33bb810823",
+  "versionCounter": 29,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-02-14T08:16:18.869Z",
+      "createdAt": "2026-02-14T08:16:18.869Z",
+      "role": "workflow:owner",
+      "workflowId": "2dVoQyklAUkyhT6X",
+      "projectId": "3VUkLpzINgecRWdr",
+      "project": {
+        "updatedAt": "2026-02-02T04:03:17.811Z",
+        "createdAt": "2026-02-02T03:07:56.821Z",
+        "id": "3VUkLpzINgecRWdr",
+        "name": "Lee Nathan <applesquash@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "57cc3970-7590-465d-8afd-50f44218eb39"
+      }
+    }
+  ]
+}

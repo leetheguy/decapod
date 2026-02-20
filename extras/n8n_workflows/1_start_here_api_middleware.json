@@ -1,0 +1,871 @@
+{
+  "updatedAt": "2026-02-20T07:29:52.268Z",
+  "createdAt": "2026-02-04T06:33:50.351Z",
+  "id": "1h0X_Rlb4z32eo3OiWogF",
+  "name": "1. START HERE! ---> API middleware 📖",
+  "description": "This is Decapod's entry point. It intercepts the AI API calls and handles them the Decapod way.",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        448,
+        128
+      ],
+      "id": "8c775617-e2ec-497d-8af1-b8ccf1d3fff1",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        -96
+      ],
+      "id": "db401e95-dc25-42be-80c3-fc03a354adc5",
+      "name": "extract tools JSON"
+    },
+    {
+      "parameters": {
+        "jsCode": "let output = $('Call \\'construct message history\\'').first().json;\n// let output = $('chat completions endpoint').first().json;\n\noutput.body.tools = $input.first().json.data\n\nreturn output;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        -96
+      ],
+      "id": "e6386c77-23e7-4093-9295-ee79366817b0",
+      "name": "inject tools"
+    },
+    {
+      "parameters": {
+        "bucketName": "decapod",
+        "fileKey": "/system/tools/tools.json"
+      },
+      "type": "n8n-nodes-base.s3",
+      "typeVersion": 1,
+      "position": [
+        672,
+        -96
+      ],
+      "id": "de5ca88b-0e6a-4412-a999-df5330336177",
+      "name": "download tools.json",
+      "credentials": {
+        "s3": {
+          "id": "Eb3VK48Bqchm37fk",
+          "name": "internal minio"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "LFNBtP5MJ8zcQsXBe90a9",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/LFNBtP5MJ8zcQsXBe90a9",
+          "cachedResultName": "worker"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "state": "={{ $('save all communication data to state').item.json }}"
+          },
+          "matchingColumns": [
+            "state"
+          ],
+          "schema": [
+            {
+              "id": "state",
+              "displayName": "state",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        2288,
+        -336
+      ],
+      "id": "1392ec3d-1b3e-4071-ab6d-ef4f7b907c5b",
+      "name": "call worker with state data",
+      "alwaysOutputData": false,
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "ELnzCqmnbohzXgqG",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/ELnzCqmnbohzXgqG",
+          "cachedResultName": "construct message history"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        448,
+        -96
+      ],
+      "id": "f6f399a7-aed2-435a-9c4b-1b164edf15b5",
+      "name": "Call 'construct message history'"
+    },
+    {
+      "parameters": {
+        "options": {
+          "enableStreaming": false
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        2496,
+        -96
+      ],
+      "id": "68d21187-64c4-47f3-aab5-1bfd45c8d214",
+      "name": "respond to chat completion"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "decapod_state",
+          "mode": "list",
+          "cachedResultName": "decapod_state"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "state_name": "decapod",
+            "initial_session": "={{ $('inject tools').item.json }}",
+            "response_to_user": "={{ $('first AI contact').item.json }}"
+          },
+          "matchingColumns": [
+            "state_name"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "state_name",
+              "displayName": "state_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "agent_name",
+              "displayName": "agent_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "working",
+              "displayName": "working",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "default_model",
+              "displayName": "default_model",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "initial_session",
+              "displayName": "initial_session",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "response_to_user",
+              "displayName": "response_to_user",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "updated_at",
+              "displayName": "updated_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1568,
+        -96
+      ],
+      "id": "df4c0496-98d8-4d98-a9a8-972be065a80d",
+      "name": "save all communication data to state",
+      "credentials": {
+        "postgres": {
+          "id": "0UtciEE4IUCD05zk",
+          "name": "decapod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "73cd4c6e-0a0d-4ab2-91ac-8f8a7857bcc9",
+              "leftValue": "={{ $json.choices[0].message.tool_calls }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2016,
+        -96
+      ],
+      "id": "425ae2d1-e8c1-4c95-a4c5-df9e1c667bfd",
+      "name": "if agent called a tool"
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2496,
+        -336
+      ],
+      "id": "329c8301-a51c-43a1-b2a5-03d39c75251a",
+      "name": "take a breath before the next loop",
+      "webhookId": "6a1a4a17-d483-402a-8c0e-958d4614e45c"
+    },
+    {
+      "parameters": {
+        "content": "## Spoof the Open AI API endpoints\n\nURLs are auto generated. \nActual URL will likely be\n`http://n8n:5678/webhook/v1/decapod`\nif all instructions were followed.\n",
+        "height": 608,
+        "width": 576,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -432,
+        -336
+      ],
+      "typeVersion": 1,
+      "id": "4c238a77-1fe2-43d3-94cc-cfd97451d882",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "url": "https://openrouter.ai/api/v1/models",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        224,
+        128
+      ],
+      "id": "a4c44a5f-3724-4ea2-bdd5-af51d3d7a082",
+      "name": "get models from source"
+    },
+    {
+      "parameters": {
+        "path": "/v1/decapod/models",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        128
+      ],
+      "id": "317ef581-3e92-4a75-8005-fc60f68a55ef",
+      "name": "get models endpoint",
+      "webhookId": "8fb831be-24af-4745-9ccb-985f2aece1f7"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "/v1/decapod/chat/completions",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        -96
+      ],
+      "id": "d04e0146-f960-40e9-aa40-7b4cf44669e5",
+      "name": "chat completions endpoint",
+      "webhookId": "1ff3cab8-e976-4b89-8b68-2845a69e9ffe"
+    },
+    {
+      "parameters": {
+        "path": "/v1/decapod",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        -320
+      ],
+      "id": "5a3f6638-820d-4ef5-bf09-d1d5157cd6ed",
+      "name": "verification endpoint",
+      "webhookId": "21633362-9b93-4c57-baab-0945639d0a30"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        224,
+        -96
+      ],
+      "id": "b5fb9a6a-35cb-4b06-bf41-e7e480e3b2d5",
+      "name": "todo: implement multiple states"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n# Update Credentials!",
+        "height": 336,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        144,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "8b641484-e7eb-42b8-b23f-bfc3e3f1ea89",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "# Update Credentials!",
+        "height": 336,
+        "width": 224,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        608,
+        -256
+      ],
+      "typeVersion": 1,
+      "id": "d4cb026d-375a-4000-a0f8-539ff520ddaf",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "# Update Credentials!",
+        "height": 336,
+        "width": 224,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1504,
+        -256
+      ],
+      "typeVersion": 1,
+      "id": "c4513e8c-6961-43cc-8ad0-f6834695e268",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openRouterApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "stream",
+              "value": "false"
+            },
+            {
+              "name": "model",
+              "value": "={{ $json.body.model }}"
+            },
+            {
+              "name": "messages",
+              "value": "={{ $json.body.messages }}"
+            },
+            {
+              "name": "tools",
+              "value": "={{ $json.body.tools }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1344,
+        -96
+      ],
+      "id": "cce1e251-86f9-4edb-9886-7d9dbcdb13b7",
+      "name": "first AI contact",
+      "credentials": {
+        "openRouterApi": {
+          "id": "tCnBW8DyX2OD1ciT",
+          "name": "OpenRouter account"
+        },
+        "httpBearerAuth": {
+          "id": "faHm1CP1A9OL9Jjp",
+          "name": "open router raw"
+        },
+        "anthropicApi": {
+          "id": "Q60Cd7rbDNgFQdjB",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return $('first AI contact').first().json"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1792,
+        -96
+      ],
+      "id": "75670acc-2b65-4599-94e1-2dc37e2187fe",
+      "name": "ensure the if gets the agent message"
+    },
+    {
+      "parameters": {
+        "content": "## The main loop\n\nKeep calling the worker until the agent returns a message with no tool calls.",
+        "height": 528,
+        "width": 704,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1952,
+        -448
+      ],
+      "typeVersion": 1,
+      "id": "63d56acc-355d-4a83-8493-e97957af8791",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "# Visit me!\n(click node and\n`ctrl/cmd shift O` to open)",
+        "height": 336,
+        "width": 224,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        384,
+        -256
+      ],
+      "typeVersion": 1,
+      "id": "2c949d14-7f80-4a8d-842b-38d93ee73f2f",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n# Visit me!\n(click node and\n`ctrl/cmd shift O` to open)",
+        "height": 336,
+        "width": 224,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2224,
+        -352
+      ],
+      "typeVersion": 1,
+      "id": "84bf2469-e7dc-48f3-a00f-eb65e8f264b8",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "# Update Credentials!\n(And maybe AI API if you want?)",
+        "height": 336,
+        "width": 224,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1280,
+        -256
+      ],
+      "typeVersion": 1,
+      "id": "db763649-9929-4c14-9a12-748dfde7ed0d",
+      "name": "Sticky Note7"
+    }
+  ],
+  "connections": {
+    "extract tools JSON": {
+      "main": [
+        [
+          {
+            "node": "inject tools",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "inject tools": {
+      "main": [
+        [
+          {
+            "node": "first AI contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "download tools.json": {
+      "main": [
+        [
+          {
+            "node": "extract tools JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'construct message history'": {
+      "main": [
+        [
+          {
+            "node": "download tools.json",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "call worker with state data": {
+      "main": [
+        [
+          {
+            "node": "take a breath before the next loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "save all communication data to state": {
+      "main": [
+        [
+          {
+            "node": "ensure the if gets the agent message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "if agent called a tool": {
+      "main": [
+        [
+          {
+            "node": "call worker with state data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "respond to chat completion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "take a breath before the next loop": {
+      "main": [
+        [
+          {
+            "node": "if agent called a tool",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get models from source": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get models endpoint": {
+      "main": [
+        [
+          {
+            "node": "get models from source",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "chat completions endpoint": {
+      "main": [
+        [
+          {
+            "node": "todo: implement multiple states",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "verification endpoint": {
+      "main": [
+        []
+      ]
+    },
+    "todo: implement multiple states": {
+      "main": [
+        [
+          {
+            "node": "Call 'construct message history'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "first AI contact": {
+      "main": [
+        [
+          {
+            "node": "save all communication data to state",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ensure the if gets the agent message": {
+      "main": [
+        [
+          {
+            "node": "if agent called a tool",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "get models endpoint": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n:5678",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br",
+            "user-agent": "Python/3.11 aiohttp/3.13.2"
+          },
+          "params": {},
+          "query": {},
+          "body": {},
+          "webhookUrl": "https://n8n.leenathan.com/webhook/v1/decapod/models",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "chat completions endpoint": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n:5678",
+            "content-type": "application/json",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br",
+            "user-agent": "Python/3.11 aiohttp/3.13.2",
+            "content-length": "290"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "stream": true,
+            "model": "anthropic/claude-haiku-4.5",
+            "messages": [
+              {
+                "role": "user",
+                "content": "Hello!"
+              },
+              {
+                "role": "assistant",
+                "content": "Hello! 👋 Welcome to Decapod! How can I help you today?"
+              },
+              {
+                "role": "user",
+                "content": "Can you please create a list of pizza recipes?"
+              }
+            ]
+          },
+          "webhookUrl": "https://n8n.leenathan.com/webhook/v1/decapod/chat/completions",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "278cd53b-87d8-4a9b-8054-8d5852cf2ef6",
+  "activeVersionId": "278cd53b-87d8-4a9b-8054-8d5852cf2ef6",
+  "versionCounter": 1745,
+  "triggerCount": 3,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-02-04T06:33:50.357Z",
+      "createdAt": "2026-02-04T06:33:50.357Z",
+      "role": "workflow:owner",
+      "workflowId": "1h0X_Rlb4z32eo3OiWogF",
+      "projectId": "3VUkLpzINgecRWdr",
+      "project": {
+        "updatedAt": "2026-02-02T04:03:17.811Z",
+        "createdAt": "2026-02-02T03:07:56.821Z",
+        "id": "3VUkLpzINgecRWdr",
+        "name": "Lee Nathan <applesquash@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "57cc3970-7590-465d-8afd-50f44218eb39"
+      }
+    }
+  ]
+}

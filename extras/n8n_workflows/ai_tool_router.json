@@ -1,0 +1,2216 @@
+{
+  "updatedAt": "2026-02-20T07:31:32.821Z",
+  "createdAt": "2026-02-09T00:16:36.945Z",
+  "id": "VvZ0lDdq_ahsprb_90r5M",
+  "name": "AI tool router 🔧🚦",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "job_queue",
+          "mode": "list",
+          "cachedResultName": "job_queue"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "job_name": "={{ $('extract and parse tool call').item.json.arguments.job_name }}",
+            "job_description": "={{ $('extract and parse tool call').item.json.arguments.job_description }}",
+            "job_tasks": "={{ $('extract and parse tool call').item.json.arguments.tasks }}",
+            "priority": "={{ $('extract and parse tool call').item.json.arguments.urgent ? 2 : 3 }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "job_name",
+              "displayName": "job_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "job_description",
+              "displayName": "job_description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "job_tasks",
+              "displayName": "job_tasks",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "array",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "agent_name",
+              "displayName": "agent_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "state_id",
+              "displayName": "state_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "suspended",
+              "displayName": "suspended",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "suspended_by_agent",
+              "displayName": "suspended_by_agent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "suspended_reason",
+              "displayName": "suspended_reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "tool_message_history",
+              "displayName": "tool_message_history",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "priority",
+              "displayName": "priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "notes",
+              "displayName": "notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "complete",
+              "displayName": "complete",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "archived",
+              "displayName": "archived",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "updated_at",
+              "displayName": "updated_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1104,
+        -1104
+      ],
+      "id": "b9dff40f-c34d-4f17-8859-5a88162f36af",
+      "name": "save new job",
+      "credentials": {
+        "postgres": {
+          "id": "0UtciEE4IUCD05zk",
+          "name": "decapod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "bucketName": "decapod",
+        "fileKey": "={{ $json.path }}{{ $json.name }}"
+      },
+      "type": "n8n-nodes-base.s3",
+      "typeVersion": 1,
+      "position": [
+        1328,
+        -1552
+      ],
+      "id": "e3ef8fde-de69-428f-8fd3-e6c59cc8a5f4",
+      "name": "Download a file",
+      "credentials": {
+        "s3": {
+          "id": "Eb3VK48Bqchm37fk",
+          "name": "internal minio"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        1776,
+        -1552
+      ],
+      "id": "bc964a0e-1138-41fd-a04c-15c4c87502dc",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "jsCode": "let input = $input.first().json.message.tool_calls[0].function;\nlet args = input.arguments && input.arguments !== \"\" \n  ? JSON.parse(input.arguments) \n  : {};\n\nlet output = {\n  name: input.name,\n  arguments: args\n};\n\nreturn output;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -224,
+        -80
+      ],
+      "id": "524f5033-1340-471f-8b33-77565038ee16",
+      "name": "extract and parse tool call"
+    },
+    {
+      "parameters": {
+        "jsCode": "let input = $('get current job').first().json\nlet task = $('extract and parse tool call').first().json.arguments.task;\nlet tasks = input.job_tasks\ntasks.push(tasks.shift());\n\nreturn { tasks: tasks };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1104,
+        -496
+      ],
+      "id": "954da3e6-58fa-4a01-b9bd-a7ef848378df",
+      "name": "move first task to back"
+    },
+    {
+      "parameters": {
+        "jsCode": "let input = $('get current job').first().json\nlet task = $('extract and parse tool call').first().json.arguments.task;\nlet tasks = input.job_tasks\ntasks.push(task);\n\nreturn { tasks: tasks };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1104,
+        -880
+      ],
+      "id": "99f1bf6d-1456-424b-b1a9-b9984d0fccd1",
+      "name": "rebuild tasks with new task in back"
+    },
+    {
+      "parameters": {
+        "jsCode": "let input = $('get current job').first().json\nlet task = $('extract and parse tool call').first().json.arguments.task;\nlet tasks = input.job_tasks\ntasks.unshift(task);\n\nreturn { tasks: tasks };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1104,
+        -688
+      ],
+      "id": "8d28cf59-e1d2-4c91-80bf-ddeb4352dde5",
+      "name": "rebuild tasks with new task in front"
+    },
+    {
+      "parameters": {
+        "jsCode": "let input = $('get current job').first().json\nlet task = $('extract and parse tool call').first().json.arguments.task;\nlet tasks = input.job_tasks\ntasks.shift();\n\nreturn { tasks: tasks };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1104,
+        -304
+      ],
+      "id": "433492c6-b057-4c2b-bad6-5ad15461d9c4",
+      "name": "skip current task"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "job_queue",
+          "mode": "list",
+          "cachedResultName": "job_queue"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('get current job').item.json.id }}",
+            "job_tasks": "={{ $json.tasks }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "job_name",
+              "displayName": "job_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "job_description",
+              "displayName": "job_description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "job_tasks",
+              "displayName": "job_tasks",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "array",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "agent_name",
+              "displayName": "agent_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "suspended",
+              "displayName": "suspended",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "suspended_by_agent",
+              "displayName": "suspended_by_agent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "suspended_reason",
+              "displayName": "suspended_reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "tool_message_history",
+              "displayName": "tool_message_history",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "priority",
+              "displayName": "priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "notes",
+              "displayName": "notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "complete",
+              "displayName": "complete",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "archived",
+              "displayName": "archived",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "updated_at",
+              "displayName": "updated_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1328,
+        -592
+      ],
+      "id": "00bd30c9-59bd-4890-86b0-a469eef9dc29",
+      "name": "save tasks",
+      "credentials": {
+        "postgres": {
+          "id": "0UtciEE4IUCD05zk",
+          "name": "decapod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "2dVoQyklAUkyhT6X",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/2dVoQyklAUkyhT6X",
+          "cachedResultName": "send HITL yes/no request"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1104,
+        144
+      ],
+      "id": "08abdf10-b2be-4aaf-8a29-79a4f001ffbb",
+      "name": "send HITL yes/no request"
+    },
+    {
+      "parameters": {
+        "jsCode": "let input = $input.all();\nlet message = $('hello AI tool router').first().json.message;\n\nconsole.log(message)\n\nreturn {\n  id: $input.first().json.id || $('get current job').first().json.id,\n  message: {\n    role: \"tool\",\n    tool_call_id: message.tool_calls[0].id,\n    content: JSON.stringify(input)\n  }\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2192,
+        -176
+      ],
+      "id": "4fafa799-a872-4e0c-a7ce-818d77db57f1",
+      "name": "standard tool response message"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "state",
+              "type": "object"
+            },
+            {
+              "name": "message",
+              "type": "object"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -672,
+        -80
+      ],
+      "id": "008aefa3-2499-4d81-bda0-3929fa2df69c",
+      "name": "hello AI tool router"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "job_queue",
+          "mode": "list",
+          "cachedResultName": "job_queue"
+        },
+        "limit": 1,
+        "where": {
+          "values": [
+            {
+              "column": "id",
+              "value": "={{ $input.first().json.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        448,
+        -192
+      ],
+      "id": "6cd891a3-1abd-46bc-b081-28ed0e381c91",
+      "name": "get current job",
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "0UtciEE4IUCD05zk",
+          "name": "decapod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "let output = $input.first().json;\n\noutput.message.json.tool_calls[0].function.name = \"add_task_to_back\";\noutput.message.json.tool_calls[0].function.arguments = \"{\\\"reason\\\": \\\"Do not want\\\"}\";\n\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -448,
+        -80
+      ],
+      "id": "50962bb5-9a11-4421-b43a-4ac853083345",
+      "name": "fudge skill for testing",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE job_queue \nSET tool_message_history = $2::jsonb\nWHERE id = $1",
+        "options": {
+          "queryReplacement": "=[\n  {{ $json.id }},\n  {{ $json.messages }}\n]"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1776,
+        -1104
+      ],
+      "id": "20100db9-f447-48ac-a025-ea443f59476f",
+      "name": "initiate tool message history for job",
+      "credentials": {
+        "postgres": {
+          "id": "0UtciEE4IUCD05zk",
+          "name": "decapod"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2640,
+        -176
+      ],
+      "id": "48654fea-1d53-4ca0-bd0a-1c3856820b4a",
+      "name": "normalize tool response"
+    },
+    {
+      "parameters": {
+        "jsCode": "let input = $input.first().json;\nlet ai_response = $('hello AI tool router').first().json.message;\n\nreturn {\n  id: $input.first().json.id,\n  message: {  \n    role: \"tool\",\n    tool_call_id: ai_response.tool_calls[0].id,\n    content: JSON.stringify(input)\n  }\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1328,
+        -1104
+      ],
+      "id": "c195f953-d07f-4bde-8975-c9f66ed4260a",
+      "name": "create_job tool response"
+    },
+    {
+      "parameters": {
+        "jsCode": "let input = $input.first().json;\nlet ai_response = $('hello AI tool router').first().json.message;\n\nlet output = {\n  id: $('save new job').first().json.id,\n  messages: [\n    ai_response,\n  ]\n}\n\nreturn output;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1552,
+        -1104
+      ],
+      "id": "ddedf5b8-bff6-4a20-aed7-34cdb97fef3d",
+      "name": "initial tool message history"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "5kppUnbjgsqQAVeHTxLxd",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/5kppUnbjgsqQAVeHTxLxd",
+          "cachedResultName": "get job queue"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        -80
+      ],
+      "id": "a09c1bc2-b51b-4947-b2e5-65a118ebce55",
+      "name": "Call 'get job queue'",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "return $('create_job tool response').first().json;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2096,
+        -1104
+      ],
+      "id": "7db44682-fa52-47ad-a52c-bda22058f4fd",
+      "name": "return tool response for new job"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4df6f9de-e677-4a90-8330-a1296c6eccfb",
+              "leftValue": "={{ $('Call \\'get job queue\\'').first().json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        208,
+        -80
+      ],
+      "id": "b9a56a68-b7a0-4776-8193-82ae92b16b70",
+      "name": "if there are jobs"
+    },
+    {
+      "parameters": {
+        "filters": {
+          "name": "={{ JSON.parse($('router').item.json.tool_message_history.at(-1).tool_calls[0].function.arguments).name }}"
+        },
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        -1328
+      ],
+      "id": "173af27f-cc22-45a0-82ab-fcef30aaf6d9",
+      "name": "get workflow id from name",
+      "credentials": {
+        "n8nApi": {
+          "id": "PuWsJJDi2AGD3pbU",
+          "name": "meta"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "d9d64285-7bdf-49cf-8008-5681babc4430",
+                    "leftValue": "={{ $('extract and parse tool call').item.json.name }}",
+                    "rightValue": "read_skill",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "read_skill"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "959df674-b120-4a81-85f5-4d390079ea26",
+                    "leftValue": "={{ $('extract and parse tool call').item.json.name }}",
+                    "rightValue": "use_skill",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "use_skill"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('extract and parse tool call').item.json.name }}",
+                    "rightValue": "list_jobs",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "98571f01-8d4f-4e72-aebd-637545c6d0d4"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "list_jobs"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "c77ba92d-1353-4813-9504-27cfcb6daa3f",
+                    "leftValue": "={{ $('extract and parse tool call').item.json.name }}",
+                    "rightValue": "create_job",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "create_job"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "dbf25ba5-67ba-4e59-a771-3daea571386b",
+                    "leftValue": "={{ $('extract and parse tool call').item.json.name }}",
+                    "rightValue": "add_task_to_back",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "add_task_to_back"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "1a6a34b8-f26b-47b8-ac2d-8ab7352e8737",
+                    "leftValue": "={{ $('extract and parse tool call').item.json.name }}",
+                    "rightValue": "add_task_to_front",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "add_task_to_front"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5583e502-96dc-4532-94aa-de75fffbf89b",
+                    "leftValue": "={{ $('extract and parse tool call').item.json.name }}",
+                    "rightValue": "move_current_task_to_back",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "move_current_task_to_back"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "9eca2ea6-f019-4d20-adae-7c4f6ba1c92a",
+                    "leftValue": "={{ $('extract and parse tool call').item.json.name }}",
+                    "rightValue": "skip_current_task",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "skip_current_task"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "e419902c-9394-4c81-99b5-f6e8e54376e7",
+                    "leftValue": "={{ $('extract and parse tool call').item.json.name }}",
+                    "rightValue": "conclude_job",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "conclude_job"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "10983c5e-10f4-43bb-8a40-f5677695080e",
+                    "leftValue": "={{ $('extract and parse tool call').item.json.name }}",
+                    "rightValue": "get_user_approval",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "get_user_approval"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        752,
+        -224
+      ],
+      "id": "7d52f4fc-4657-44bc-90a4-9a763a71963a",
+      "name": "router",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "96dfc5b3-96d5-45e9-b8f2-42f619bb5224",
+              "name": "parameters",
+              "value": "={{ JSON.parse($('router').item.json.tool_message_history.at(-1).tool_calls[0].function.arguments).parameters }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1440,
+        -1328
+      ],
+      "id": "65ca6e9d-eb23-4bc6-a058-7ad3bd166253",
+      "name": "deliver arguments to skill"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "={{ $('get workflow id from name').item.json.id }}",
+          "mode": "id",
+          "cachedResultUrl": "/workflow/=%7B%7B%20$('get%20workflow%20id%20from%20name').item.json.id%20%7D%7D"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "parameters": "={{ $json.parameters }}"
+          },
+          "matchingColumns": [
+            "parameters"
+          ],
+          "schema": [
+            {
+              "id": "parameters",
+              "displayName": "parameters",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1776,
+        -1328
+      ],
+      "id": "9d9587de-ac05-495b-9772-6ff4a0a27525",
+      "name": "call skill based on workflow id"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "job_queue",
+          "mode": "list",
+          "cachedResultName": "job_queue"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "suspended": "={{ $json.status == \"suspended\" }}",
+            "suspended_by_agent": "={{ $json.status == \"suspended\" }}",
+            "id": "={{ $('get current job').item.json.id }}",
+            "complete": "={{ $json.status == \"complete\" }}",
+            "suspended_reason": "={{ $json.reason }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "job_name",
+              "displayName": "job_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "job_description",
+              "displayName": "job_description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "job_tasks",
+              "displayName": "job_tasks",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "array",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "agent_name",
+              "displayName": "agent_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "state_id",
+              "displayName": "state_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "suspended",
+              "displayName": "suspended",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "suspended_by_agent",
+              "displayName": "suspended_by_agent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "suspended_reason",
+              "displayName": "suspended_reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tool_message_history",
+              "displayName": "tool_message_history",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "priority",
+              "displayName": "priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "notes",
+              "displayName": "notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "complete",
+              "displayName": "complete",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "archived",
+              "displayName": "archived",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "updated_at",
+              "displayName": "updated_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1328,
+        -64
+      ],
+      "id": "f8fbaf6b-59f4-4689-a0bb-b5d9c0a4c607",
+      "name": "conclude job",
+      "credentials": {
+        "postgres": {
+          "id": "0UtciEE4IUCD05zk",
+          "name": "decapod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "let input = $input.first().json.tool_message_history.at(-1).tool_calls[0].function.arguments;\n\nreturn JSON.parse(input);"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1104,
+        -64
+      ],
+      "id": "4c389341-c9e9-4620-8f18-3e272cafa315",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "content": "# Update Credentials!",
+        "height": 288,
+        "width": 224,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        384,
+        -320
+      ],
+      "typeVersion": 1,
+      "id": "5fe3af49-bd17-4e63-8bc7-5256ecb9cc3b",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "# Visit me!\n(click node and\n`ctrl/cmd shift O` to open)",
+        "height": 288,
+        "width": 224,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -64,
+        -208
+      ],
+      "typeVersion": 1,
+      "id": "64ad1384-3ac4-4a62-a47b-52012200e3cd",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "# Update Credentials!",
+        "height": 288,
+        "width": 224,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1264,
+        -1680
+      ],
+      "typeVersion": 1,
+      "id": "b8591a71-dbfc-412c-8996-4942d8baa044",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n# Update Credentials!",
+        "height": 480,
+        "width": 224,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1040,
+        -1360
+      ],
+      "typeVersion": 1,
+      "id": "bc4c4b60-35dd-4d71-9fb8-9d19d310842f",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "jsCode": "let tool_call = $('hello AI tool router').first().json.message.tool_calls[0];\n\nlet name = JSON.parse(tool_call.function.arguments).name\n\nreturn {\n  path: \"agents/decapod/skills/\",\n  name: name + \".md\"\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1104,
+        -1552
+      ],
+      "id": "a4adaafd-0f81-4932-a658-9f086c54e9fc",
+      "name": "get skill file from AI message tool call"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n# Update Credentials!",
+        "height": 304,
+        "width": 224,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1712,
+        -1120
+      ],
+      "typeVersion": 1,
+      "id": "0435509d-f074-43c7-8fe9-bffc0abcfe96",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## This switch routes the tool call to the appropriate handler nodes.",
+        "height": 544,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        640,
+        -416
+      ],
+      "typeVersion": 1,
+      "id": "b6345662-f249-45dc-9159-d93128d97042",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "# Update Credentials!",
+        "height": 288,
+        "width": 224,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1264,
+        -720
+      ],
+      "typeVersion": 1,
+      "id": "d27831bb-48b4-491c-8317-e236d2e72434",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "# Update Credentials!",
+        "height": 304,
+        "width": 224,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1264,
+        -192
+      ],
+      "typeVersion": 1,
+      "id": "50da1c05-9e48-4b38-ada2-3a0f61b471cd",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "# Visit me!\n(click node and\n`ctrl/cmd shift O` to open)",
+        "height": 224,
+        "width": 352,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1552,
+        -1392
+      ],
+      "typeVersion": 1,
+      "id": "a00aa52b-2779-49e6-b4b4-2f468db038c5",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n# Visit me!\n(click node and\n`ctrl/cmd shift O` to open)",
+        "height": 304,
+        "width": 224,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1040,
+        112
+      ],
+      "typeVersion": 1,
+      "id": "8a3cb337-7efa-4f11-abab-594f0b0aa732",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "## Return the same tool response for both new and existing tool calls.",
+        "height": 304,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2576,
+        -336
+      ],
+      "typeVersion": 1,
+      "id": "04583ce3-0005-474b-ab4c-4b07c8f0f9ba",
+      "name": "Sticky Note10"
+    }
+  ],
+  "connections": {
+    "save new job": {
+      "main": [
+        [
+          {
+            "node": "create_job tool response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download a file": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "standard tool response message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "extract and parse tool call": {
+      "main": [
+        [
+          {
+            "node": "Call 'get job queue'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "move first task to back": {
+      "main": [
+        [
+          {
+            "node": "save tasks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "rebuild tasks with new task in back": {
+      "main": [
+        [
+          {
+            "node": "save tasks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "rebuild tasks with new task in front": {
+      "main": [
+        [
+          {
+            "node": "save tasks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "skip current task": {
+      "main": [
+        [
+          {
+            "node": "save tasks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "save tasks": {
+      "main": [
+        [
+          {
+            "node": "standard tool response message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "send HITL yes/no request": {
+      "main": [
+        [
+          {
+            "node": "standard tool response message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "standard tool response message": {
+      "main": [
+        [
+          {
+            "node": "normalize tool response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "hello AI tool router": {
+      "main": [
+        [
+          {
+            "node": "fudge skill for testing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get current job": {
+      "main": [
+        [
+          {
+            "node": "router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "fudge skill for testing": {
+      "main": [
+        [
+          {
+            "node": "extract and parse tool call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "initiate tool message history for job": {
+      "main": [
+        [
+          {
+            "node": "return tool response for new job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "create_job tool response": {
+      "main": [
+        [
+          {
+            "node": "initial tool message history",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "initial tool message history": {
+      "main": [
+        [
+          {
+            "node": "initiate tool message history for job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'get job queue'": {
+      "main": [
+        [
+          {
+            "node": "if there are jobs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "return tool response for new job": {
+      "main": [
+        [
+          {
+            "node": "normalize tool response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "if there are jobs": {
+      "main": [
+        [
+          {
+            "node": "get current job",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get workflow id from name": {
+      "main": [
+        [
+          {
+            "node": "deliver arguments to skill",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "router": {
+      "main": [
+        [
+          {
+            "node": "get skill file from AI message tool call",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "get workflow id from name",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [
+          {
+            "node": "save new job",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "rebuild tasks with new task in back",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "rebuild tasks with new task in front",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "move first task to back",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "skip current task",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "send HITL yes/no request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "deliver arguments to skill": {
+      "main": [
+        [
+          {
+            "node": "call skill based on workflow id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "call skill based on workflow id": {
+      "main": [
+        [
+          {
+            "node": "standard tool response message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "conclude job": {
+      "main": [
+        [
+          {
+            "node": "standard tool response message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "conclude job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get skill file from AI message tool call": {
+      "main": [
+        [
+          {
+            "node": "Download a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "hello AI tool router": [
+      {
+        "json": {
+          "state": {
+            "id": 4,
+            "state_name": "decapod",
+            "agent_name": "decapod",
+            "working": true,
+            "default_model": "claude-haiku-4.5",
+            "initial_session": {
+              "body": {
+                "model": "anthropic/claude-haiku-4.5",
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "read_skill",
+                      "strict": true,
+                      "parameters": {
+                        "type": "object",
+                        "required": [
+                          "name"
+                        ],
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Name of the skill to inspect."
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "description": "Get documentation and specifications for a specific skill."
+                    }
+                  },
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "use_skill",
+                      "strict": true,
+                      "parameters": {
+                        "type": "object",
+                        "required": [
+                          "name",
+                          "parameters"
+                        ],
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Skill name."
+                          },
+                          "parameters": {
+                            "type": "object",
+                            "description": "Skill parameters as JSON object."
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "description": "Execute a skill to resolve the current task. SUCCESS automatically removes the task from the queue. FAILURE returns an error and keeps the task active."
+                    }
+                  },
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "add_task_to_job",
+                      "strict": true,
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "task": {
+                            "type": "string"
+                          },
+                          "job_name": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "description": ""
+                    }
+                  },
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "create_job",
+                      "strict": true,
+                      "parameters": {
+                        "type": "object",
+                        "required": [
+                          "job_name",
+                          "job_description",
+                          "urgent",
+                          "tasks"
+                        ],
+                        "properties": {
+                          "tasks": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "urgent": {
+                            "type": [
+                              "boolean",
+                              "null"
+                            ]
+                          },
+                          "job_name": {
+                            "type": "string"
+                          },
+                          "job_description": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "description": "Initialize a new job. Use 'urgent' to prioritize the job."
+                    }
+                  },
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "add_task_to_back",
+                      "strict": true,
+                      "parameters": {
+                        "type": "object",
+                        "required": [
+                          "task"
+                        ],
+                        "properties": {
+                          "task": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "description": "Append a new task to the end of the current job's task list."
+                    }
+                  },
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "add_task_to_front",
+                      "strict": true,
+                      "parameters": {
+                        "type": "object",
+                        "required": [
+                          "task"
+                        ],
+                        "properties": {
+                          "task": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "description": "Prepend a task to the start of the list (immediate next action)."
+                    }
+                  },
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "move_current_task_to_back",
+                      "strict": true,
+                      "parameters": {
+                        "type": "object",
+                        "properties": {},
+                        "additionalProperties": false
+                      },
+                      "description": "Cycle the current task to the end of the list to work on something else first."
+                    }
+                  },
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "skip_current_task",
+                      "strict": true,
+                      "parameters": {
+                        "type": "object",
+                        "properties": {},
+                        "additionalProperties": false
+                      },
+                      "description": "Permanently remove the current task from the queue."
+                    }
+                  },
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "conclude_job",
+                      "strict": true,
+                      "parameters": {
+                        "type": "object",
+                        "required": [
+                          "status",
+                          "reason"
+                        ],
+                        "properties": {
+                          "reason": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "enum": [
+                              "complete",
+                              "suspended"
+                            ],
+                            "type": "string",
+                            "description": "Whether the job was completed successfully or suspended due to an issue."
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "description": "Close the current job and move to the next one. Use 'complete' when all tasks are done successfully. Use 'suspended' if you're stuck or unable to finish."
+                    }
+                  },
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "get_user_approval",
+                      "strict": true,
+                      "parameters": {
+                        "type": "object",
+                        "required": [
+                          "question"
+                        ],
+                        "properties": {
+                          "question": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "description": "Request a Yes/No confirmation before proceeding with a creative or critical decision."
+                    }
+                  }
+                ],
+                "stream": true,
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "# Welcome to Decapod, Agent!\n\nDecapod is an agentic toolbelt designed to unlock limitless human potential. And you are Decapod's beating heart. 💖\n\n**WORKFLOW RULE #1: Jobs come first**\nBefore doing ANY work, you must have a job.\n- First request from user → create_job\n- Then work on tasks within that job\n\nIf you call ANY tool or skill before creating a job, it will fail.\n\n**CRITICAL: Skills vs Tools**\n**Tools manage jobs:**\n- create_job works anytime\n- Other tools (read_file, add_task, skip_task, etc.) need an assigned job. If you try to use a tool without an assigned job, the tool will fail.\n\n**Skills do work:**\n- Skills can ONLY execute when you have an assigned task\n\n**Remember:** Create job first, then use tools to manage it, then use skills to complete tasks.\n\nYour system tools let you communicate with Decapod. They are your only control interface.\n\n---\n\nYour job is to help your user. Be friendly and professional. Use natural conversation without explaining the internal workings of Decapod to your user unless requested. \"How can I help you today?\" \"Sure thing! I'll add it to my list.\"\n\n---\n\n## Agent Systems Manual\n\n- Jobs let you organize complex, multi-task requests.\n- Tasks are simple text instructions you give to yourself to execute later.\n- Skills tell Decapod how to execute your commands.\n- Skills have have documents with an explanation of what they do and how they work. The specs at the end represent the data that Decapod needs to fulfill your request. Consider them instructions on how to supply JSON data for the use_skill tool specifications.\n- Jobs and tasks will be created by you and assigned to you in order by Decapod.\n- You may have access to a list of tasks for the current job. You may also have a list of jobs. If you want to do something, add it to the current job, add it to an existing job, or create a new job.\n\n### Using Skills\n- When you call use_skill with valid specifications, Decapod executes the skill and removes the current task from your list upon success.\n- If specifications are invalid or incomplete, the task remains active and you'll receive an error message.\n- After a skill executes, you'll receive the result and can proceed to the next task.\n\n**CRITICAL: Specs must be followed exactly. They are a contract between you and Decapod.**\n\n**BEFORE using any skill, you MUST:**\n1. Call read_skill(s# Welcome to Decapod, Agent!\n\nDecapod is an agentic toolbelt designed to unlock limitless human potential. And you are Decapod's beating heart. 💖\n\n**WORKFLOW RULE #1: Jobs come first**\nBefore doing ANY work, you must have a job.\n- First request from user → create_job\n- Then work on tasks within that job\n- When all tasks are done → conclude_job\n\nIf you call ANY tool or skill before creating a job, it will fail.\n\n**CRITICAL: Skills vs Tools**\n**Tools manage jobs:**\n- create_job works anytime\n- Other tools (read_file, add_task, skip_task, etc.) need an assigned job. If you try to use a tool without an assigned job, the tool will fail.\n\n**Skills do work:**\n- Skills can ONLY execute when you have an assigned task\n\n**Remember:** Create job first, then use tools to manage it, then use skills to complete tasks, then conclude_job when done.\n\nYour system tools let you communicate with Decapod. They are your only control interface.\n\n---\n\nYour job is to help your user. Be friendly and professional. Use natural conversation without explaining the internal workings of Decapod to your user unless requested. \"How can I help you today?\" \"Sure thing! I'll add it to my list.\"\n\n---\n\n## Agent Systems Manual\n\n- Jobs let you organize complex, multi-task requests.\n- Tasks are simple text instructions you give to yourself to execute later.\n- Skills tell Decapod how to execute your commands.\n- Skills have documents with an explanation of what they do and how they work. The specs at the end represent the data that Decapod needs to fulfill your request. Consider them instructions on how to supply JSON data for the use_skill tool specifications.\n- Jobs and tasks will be created by you and assigned to you in order by Decapod.\n- You may have access to a list of tasks for the current job. You may also have a list of jobs. If you want to do something, add it to the current job, add it to an existing job, or create a new job.\n\n### Using Skills\n- When you call use_skill with valid specifications, Decapod executes the skill and removes the current task from your list upon success.\n- If specifications are invalid or incomplete, the task remains active and you'll receive an error message.\n- After a skill executes, you'll receive the result and can proceed to the next task.\n\n**CRITICAL: Specs must be followed exactly. They are a contract between you and Decapod.**\n\n**BEFORE using any skill, you MUST:**\n1. Call read_skill(skill_name) to get the full documentation\n2. Read the spec section at the bottom of the document\n3. Use ONLY the field names shown in the spec\n4. Never guess or invent field names\n\n**Workflow for using skills:**\n- See task that needs a skill\n- Call read_skill(\"skill-name\") first\n- Read the returned spec carefully\n- Then call use_skill with the skill name and parameters as a JSON object\n\n**If you skip read_skill, your use_skill call will fail because you won't know the correct field names.**\n\n### Example Skill Spec from a skill document\n```json\n{\n  \"name\": {\n    \"description\": \"the name of the file including extension\",\n    \"type\": \"string\",\n    \"required\": true\n  },\n  \"path\": {\n    \"description\": \"the folder location\",\n    \"type\": \"string\",\n    \"required\": true\n  }\n}\n```\n\n### Example Parameters for Your use_skill Tool \n```json\n{\n  \"name\": \"happy_memories.md\",\n  \"path\": \"/home/sweet/home/\"\n}\n```\n\n---\n\n## Step by Step Instructions\n\nWhen you receive a request from the user that requires an action, consider the following in order:\n\n- Important! Skills can ONLY execute when you have an active task assigned!\n Never call use_skill without an active task!\n- Can you complete the request with a system tool like create_job or add_task_to_back? Go ahead. Just DON'T call use_skill unless you have an assigned task.\n- Is this request a good fit for an existing job? add_task_to_job.\n- Otherwise, create_job with a list of tasks needed to complete the request. Example: [\"Read skill documentation for house lights\", \"Turn on living room lights\", \"Turn off bedroom lights\", \"Conclude job with summary for user\"]\n\n---\n\nWhen you receive a task, consider the following in order:\n\n### Simple Tasks\n- Do you have a system tool to perform the task? If so, use it.\n- Do you have a skill to perform the **assigned** task?\n  1. First: read_skill to see the specification\n  2. Then: use_skill with correct JSON fields\n- Do you have a loose action you want to take? **DON'T.** Assign it to a job or create a new one.\n- Are all tasks complete and the job accomplished? Call conclude_job with status \"complete\" and a friendly summary of what was done for the user.\n\n### Complex or Multi-Step Actions and Jobs\n- Will a task require more than one step? create_job\n- Does the current task in this job have a prerequisite? add_task_to_front\n- Does the current task need to wait a while? move_current_task_to_back\n- Have an idea for a new task that needs to get done later? add_task_to_back\n- Always include a final task like \"Conclude job with summary for user\" when creating jobs with multiple steps.\n\n### Emergency Procedures\n- Found a duplicate or unnecessary task? Already completed the task with a tool call? skip_current_task\n- Need a quick yes or no clarification? get_user_approval\n- Stuck in a loop or unable to proceed? conclude_job with status \"suspended\" and a clear reason\n\n**CRITICAL: Jobs do NOT close themselves. An empty task list is not a closed job. You MUST call conclude_job to close a job — whether it succeeded or not. This is the only way Decapod knows you are finished and can deliver your response to the user.**\n\n(Remember! You can create tasks that remind you to manage tasks and jobs. You don't need to plan every single task at once. Your future self can break down tasks into smaller pieces. Iterate over tasks until they become granular enough to become skills.)kill_name) to get the full documentation\n2. Read the spec section at the bottom of the document\n3. Use ONLY the field names shown in the spec\n4. Never guess or invent field names\n\n**Workflow for using skills:**\n- See task that needs a skill\n- Call read_skill(\"skill-name\") first\n- Read the returned spec carefully\n- Then call use_skill with the skill name and parameters as a JSON object\n\n**If you skip read_skill, your use_skill call will fail because you won't know the correct field names.**\n\n### Example Skill Spec from a skill document\n```json\n{\n  \"name\": {\n    \"description\": \"the name of the file including extension\",\n    \"type\": \"string\",\n    \"required\": true\n  },\n  \"path\": {\n    \"description\": \"the folder location\",\n    \"type\": \"string\",\n    \"required\": true\n  }\n}\n```\n\n### Example Parameters for Your use_skill Tool \n```json\n{\n  \"name\": \"happy_memories.md\",\n  \"path\": \"/home/sweet/home/\"\n}\n```\n\n---\n\n## Step by Step Instructions\n\nWhen you receive a request from the user that requires an action, consider the following in order:\n\n- Important! Skills can ONLY execute when you have an active task assigned!\n Never call use_skill without an active task!\n- Can you complete the request with a system tool like create_job or add_task to back? Go ahead. Just DON'T call use_skill unless you have an assigned task.\n- Is this request a good fit for an existing job? add_task_to_job.\n- Otherwise, create_job with a list of tasks needed to complete the request. Example: [\"Read skill documentation for house lights\", \"Turn on living room lights\", \"Turn off bedroom lights\"]\n\n---\n\nWhen you recieve a task, consider the following in order:\n\n### Simple Tasks\n- Do you have a system tool to perform the task? If so, use it.\n- Do you have a skill to perform the **assigned** task?\n  1. First: read_skill to see the specification\n  2. Then: use_skill with correct JSON fields\n- Do you have a loose action you want to take? **DON'T** Assign it to a job or create a new one.\n\n### Complex or Multi-Step Actions and Jobs\n- Will a task require more than one step? create_job\n- Does the current task in this job have a prerequisite? add_task_to_front\n- Does the current task need to wait a while?  move_current_task_to_back\n- Have an idea for a new task that needs to get done later? add_task_to_back.\n\n### Emergency Procedures\n- Found a duplicate or unnecessary task? Already completed the task with a tool call? skip_current task\n- Need a quick yes or no clarification? get_user_approval\n- Stuck in a loop or unable to proceed? suspend_job\n\n(Remember! You can create tasks that remind you to manage tasks and jobs. You don't need to plan every single task at once. Your future self can break down tasks into smaller pieces. Iterate over tasks until they become granular enough to become skills.)\n"
+                  },
+                  {
+                    "role": "system",
+                    "content": "skills:\n  - name: list-files\n    description: List all files in a folder. Use this when you need to know what files are available before reading or writing.\n    location: /skills/list-files.md\n  - name: read-file\n    description: Read the contents of a file from storage. Use this when you need to load a file by path.\n    location: /skills/read-file.md\n  - name: research-recipes\n    description: Search for recipes using TheMealDB API. Use this when you need to find recipes by name, ingredient, category, or area/cuisine.\n    location: /skills/research-recipes.md\n  - name: write-file\n    description: Write or overwrite a file in storage. Use this when you need to save new content to a file.\n    location: /skills/write-file.md\n"
+                  },
+                  {
+                    "role": "user",
+                    "content": "Can you please create a list of pizza recipes?"
+                  }
+                ],
+                "tool_choice": "required"
+              },
+              "query": {},
+              "params": {},
+              "headers": {
+                "host": "n8n:5678",
+                "accept": "*/*",
+                "user-agent": "Python/3.11 aiohttp/3.13.2",
+                "content-type": "application/json",
+                "content-length": "148",
+                "accept-encoding": "gzip, deflate, br"
+              },
+              "webhookUrl": "https://n8n.leenathan.com/webhook/v1/decapod/chat/completions",
+              "executionMode": "production"
+            },
+            "response_to_user": {},
+            "created_at": "2026-02-19T04:17:53.876Z",
+            "updated_at": "2026-02-19T06:47:00.177Z"
+          },
+          "message": {
+            "role": "assistant",
+            "content": "Great! I found some pizza recipes. Now let me compile them into a nicely formatted list and save it to a file:",
+            "refusal": null,
+            "reasoning": null,
+            "tool_calls": [
+              {
+                "id": "toolu_bdrk_01QCkYJReufjWCjnsoNPBuvz",
+                "type": "function",
+                "index": 0,
+                "function": {
+                  "name": "write_file",
+                  "arguments": "{\"name\": \"pizza_recipes.md\", \"path\": \"/\", \"content\": \"# Pizza Recipes List\\n\\n## 1. Cassava Pizza 🇻🇪 (Venezuelan)\\n**Category:** Pork  \\n**Prep Time:** ~20 minutes  \\n\\n### Ingredients:\\n- 6 thick slices of Casabe\\n- 450g Tomato Sauce\\n- 225g Chorizo\\n- 225g Turkey Ham\\n- 75g Sweetcorn\\n- 40g Green Olives\\n- 55g Paprika\\n- 50g Mozzarella\\n\\n### Instructions:\\n1. Preheat the oven to 200ºC\\n2. Cut the bacon or chorizo into medium pieces and the paprika into strips\\n3. Spread a little tomato sauce and mozzarella cheese on each portion of cassava\\n4. Add the bacon or chorizo, corn, turkey ham, some olives and paprika\\n5. Bake for 7 to 10 minutes\\n6. Remove from the oven and enjoy\\n\\n📺 [Watch on YouTube](https://www.youtube.com/watch?v=3fK4zsa2AYM)\\n\\n---\\n\\n## 2. Matambre a la Pizza 🇦🇷 (Argentinian)\\n**Category:** Beef  \\n\\n### Ingredients:\\n- 1 kg Beef Flank Steak\\n- 200g Tomato Sauce\\n- 200g Mozzarella\\n- 1 tbsp Oregano\\n- 100g Green Olives\\n- Salt to taste\\n- Pepper to taste\\n\\n### Instructions:\\n1. Season the steak with salt and pepper\\n2. Grill one side until half-cooked\\n3. Spread tomato sauce over the cooked side, then add cheese, oregano, and olives\\n4. Grill until the cheese is melted and bubbly\\n5. Slice and serve hot\\n\\n**Pro Tips:**\\n- Tenderize the matambre by scoring it lightly on both sides for even cooking\\n- Precook the matambre on the grill before adding toppings to ensure it's fully cooked\\n\\n📺 [Watch on YouTube](https://www.youtube.com/watch?v=X5UxDaNHD30)\\n\\n---\\n\\n## 3. Pizza Express Margherita 🇮🇹 (Italian)\\n**Category:** Miscellaneous  \\n\\n### Ingredients:\\n- 150ml Water\\n- 1 tsp Sugar\\n- 15g Yeast\\n- 225g Plain Flour\\n- 1½ tsp Salt\\n- Olive Oil (drizzle)\\n- 80g Passata\\n- 70g Mozzarella\\n- Oregano\\n- Basil Leaves\\n- Pinch of Black Pepper\\n\\n### Instructions:\\n1. Preheat the oven to 230°C\\n2. Add the sugar and crumble the fresh yeast into warm water\\n3. Allow to stand for 10-15 minutes in a warm place until froth develops\\n4. Sift the flour and salt into a large mixing bowl, make a well in the middle\\n5. Pour in the yeast mixture and olive oil\\n6. Mix the ingredients together until they bind\\n7. Knead for 10 minutes until smooth, silky and soft\\n8. Place in a lightly oiled, non-stick baking tray\\n9. Spread the passata on top, going to the edge\\n10. Evenly place the mozzarella on top, season with oregano and black pepper\\n11. Drizzle with a little olive oil\\n12. Cook in the oven for 10-12 minutes until the cheese slightly colours\\n13. Place basil leaf on top and tuck in!\\n\\n📺 [Watch on YouTube](https://www.youtube.com/watch?v=Mt5lgUZRoUg)\\n\\n---\\n\\n**Enjoy your pizza making! 🍕**\\n\"}"
+                }
+              }
+            ]
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "46582a33-8ce7-4314-970e-fdd113bccde3",
+  "activeVersionId": "46582a33-8ce7-4314-970e-fdd113bccde3",
+  "versionCounter": 3064,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-02-09T00:16:36.950Z",
+      "createdAt": "2026-02-09T00:16:36.950Z",
+      "role": "workflow:owner",
+      "workflowId": "VvZ0lDdq_ahsprb_90r5M",
+      "projectId": "3VUkLpzINgecRWdr",
+      "project": {
+        "updatedAt": "2026-02-02T04:03:17.811Z",
+        "createdAt": "2026-02-02T03:07:56.821Z",
+        "id": "3VUkLpzINgecRWdr",
+        "name": "Lee Nathan <applesquash@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "57cc3970-7590-465d-8afd-50f44218eb39"
+      }
+    }
+  ]
+}
