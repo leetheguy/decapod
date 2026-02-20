@@ -17,6 +17,7 @@ services:
       - N8N_LICENSE_ACTIVATION_KEY=${N8N_LICENSE_ACTIVATION_KEY}
       - N8N_TRUST_PROXY=true
       - NODES_EXCLUDE="[]"
+      - NODE_FUNCTION_ALLOW_EXTERNAL=yamljs
     extra_hosts:
       - "${SUBDOMAIN}.${DOMAIN_NAME}:127.0.0.1"  # Map external domain to localhost for internal API calls
     volumes:

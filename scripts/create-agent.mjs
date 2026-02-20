@@ -20,7 +20,7 @@ const __dirname = path.dirname(__filename);
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 const TEMPLATE_DIR = path.join(PROJECT_ROOT, 'extras', 'S3_structure', 'agents', 'template');
 const AGENTS_DIR = path.join(PROJECT_ROOT, 'extras', 'S3_structure', 'agents');
-const SKILLS_YAML_PATH = path.join(TEMPLATE_DIR, 'definitions', '7_skills.yaml');
+const SKILLS_DIR = path.join(TEMPLATE_DIR, 'skills');
 
 /**
  * Convert agent name to filesystem-safe slug
@@ -52,22 +52,56 @@ function copyTemplate(src, dest) {
 }
 
 /**
- * Parse skills YAML file and extract skill information
- * @param {string} yamlPath - Path to skills YAML file
+ * Read skills from the skills directory and extract skill information
+ * @param {string} skillsDir - Path to skills directory
  * @returns {Array} Array of skill objects with name, description, location
  */
-function parseSkillsYaml(yamlPath) {
+function parseSkillsFromDirectory(skillsDir) {
   try {
-    const fileContents = fs.readFileSync(yamlPath, 'utf8');
-    const data = yaml.load(fileContents);
+    if (!fs.existsSync(skillsDir)) {
+      throw new Error(`Skills directory not found: ${skillsDir}`);
+    }
+
+    const files = fs.readdirSync(skillsDir);
+    const skillFiles = files.filter(file => file.endsWith('.md'));
     
-    if (!data || !data.skills || !Array.isArray(data.skills)) {
-      throw new Error('Invalid skills YAML structure');
+    if (skillFiles.length === 0) {
+      throw new Error(`No skill files found in ${skillsDir}`);
+    }
+
+    const skills = [];
+    
+    for (const file of skillFiles) {
+      const filePath = path.join(skillsDir, file);
+      const fileContents = fs.readFileSync(filePath, 'utf8');
+      
+      // Parse YAML frontmatter
+      const frontmatterMatch = fileContents.match(/^---\n([\s\S]*?)\n---/);
+      if (!frontmatterMatch) {
+        console.warn(`Warning: No frontmatter found in ${file}, skipping`);
+        continue;
+      }
+      
+      const frontmatter = yaml.load(frontmatterMatch[1]);
+      if (!frontmatter || !frontmatter.name) {
+        console.warn(`Warning: No name found in frontmatter of ${file}, skipping`);
+        continue;
+      }
+      
+      const skillName = frontmatter.name;
+      const skillDescription = frontmatter.description || 'No description';
+      const skillLocation = `/skills/${file}`;
+      
+      skills.push({
+        name: skillName,
+        description: skillDescription,
+        location: skillLocation
+      });
     }
     
-    return data.skills;
+    return skills;
   } catch (error) {
-    console.error(`Error parsing skills YAML: ${error.message}`);
+    console.error(`Error parsing skills from directory: ${error.message}`);
     throw error;
   }
 }
@@ -79,17 +113,11 @@ function parseSkillsYaml(yamlPath) {
  */
 async function selectSkills(skills) {
   // Build choices array for inquirer
-  const choices = skills.map(skill => {
-    const isReadFile = skill.name === 'read_file';
-    return {
-      name: isReadFile 
-        ? `${skill.name} - ${skill.description} (required)`
-        : `${skill.name} - ${skill.description}`,
-      value: skill.name,
-      checked: true, // All skills checked by default (they're in template)
-      disabled: isReadFile // Disabled items won't be in answer, but we'll add read_file back
-    };
-  });
+  const choices = skills.map(skill => ({
+    name: `${skill.name} - ${skill.description}`,
+    value: skill.name,
+    checked: true // All skills checked by default (they're in template)
+  }));
 
   const { selectedSkills } = await inquirer.prompt([
     {
@@ -107,12 +135,7 @@ async function selectSkills(skills) {
     }
   ]);
 
-  // Ensure read_file is always included (it's disabled so won't be in answer array)
-  const result = selectedSkills.includes('read_file') 
-    ? selectedSkills 
-    : ['read_file', ...selectedSkills];
-
-  return result;
+  return selectedSkills;
 }
 
 /**
@@ -163,8 +186,8 @@ async function main() {
       process.exit(1);
     }
 
-    if (!fs.existsSync(SKILLS_YAML_PATH)) {
-      console.error(`Error: Skills YAML not found: ${SKILLS_YAML_PATH}`);
+    if (!fs.existsSync(SKILLS_DIR)) {
+      console.error(`Error: Skills directory not found: ${SKILLS_DIR}`);
       process.exit(1);
     }
 
@@ -211,8 +234,8 @@ async function main() {
     console.log(`\nCreating agent: ${slug}`);
     copyTemplate(TEMPLATE_DIR, agentDir);
 
-    // Step 4: Parse template skills
-    const allSkills = parseSkillsYaml(SKILLS_YAML_PATH);
+    // Step 4: Parse template skills from skills directory
+    const allSkills = parseSkillsFromDirectory(SKILLS_DIR);
     console.log(`✓ Found ${allSkills.length} skills in template`);
 
     // Step 5: Interactive skill selection
@@ -220,7 +243,7 @@ async function main() {
     const selectedSkillNames = await selectSkills(allSkills);
 
     // Step 6: Generate new skills.yaml
-    const newSkillsYamlPath = path.join(agentDir, 'definitions', '7_skills.yaml');
+    const newSkillsYamlPath = path.join(agentDir, 'definitions', '2_skills.yaml');
     writeSkillsYaml(newSkillsYamlPath, allSkills, selectedSkillNames);
 
     // Step 7: Summary output

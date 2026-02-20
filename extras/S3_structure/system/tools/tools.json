@@ -3,7 +3,7 @@
     "type": "function",
     "function": {
       "name": "read_skill",
-      "description": "Get documentation and YAML specifications for a specific skill.",
+      "description": "Get documentation and specifications for a specific skill.",
       "strict": true,
       "parameters": {
         "type": "object",
@@ -25,9 +25,9 @@
         "type": "object",
         "properties": {
           "name": { "type": "string", "description": "Skill name." },
-          "specifications": { "type": "string", "description": "YAML data for the skill." }
+          "parameters": { "type": "object", "description": "Skill parameters as JSON object." }
         },
-        "required": ["name", "specifications"],
+        "required": ["name", "parameters"],
         "additionalProperties": false
       }
     }
@@ -35,12 +35,16 @@
   {
     "type": "function",
     "function": {
-      "name": "list_jobs",
-      "description": "View all jobs in order of priority.",
+      "name": "add_task_to_job",
+      "description": "Add a task to an existing job by job name.",
       "strict": true,
       "parameters": {
         "type": "object",
-        "properties": {},
+        "properties": {
+          "job_name": { "type": "string" },
+          "task": { "type": "string" }
+        },
+        "required": ["job_name", "task"],
         "additionalProperties": false
       }
     }
@@ -113,7 +117,7 @@
     "type": "function",
     "function": {
       "name": "skip_current_task",
-      "description": "Permanently remove the current task from the queue without executing a skill.",
+      "description": "Permanently remove the current task from the queue.",
       "strict": true,
       "parameters": {
         "type": "object",
@@ -125,15 +129,20 @@
   {
     "type": "function",
     "function": {
-      "name": "suspend_job",
-      "description": "Pause the current job and start the next available job. Requires a reason.",
+      "name": "conclude_job",
+      "description": "Close the current job and move to the next one. Use 'complete' when all tasks are done successfully. Use 'suspended' if you're stuck or unable to finish.",
       "strict": true,
       "parameters": {
         "type": "object",
         "properties": {
+          "status": { 
+            "type": "string", 
+            "enum": ["complete", "suspended"],
+            "description": "Whether the job was completed successfully or suspended due to an issue."
+          },
           "reason": { "type": "string" }
         },
-        "required": ["reason"],
+        "required": ["status", "reason"],
         "additionalProperties": false
       }
     }
@@ -150,22 +159,6 @@
           "question": { "type": "string" }
         },
         "required": ["question"],
-        "additionalProperties": false
-      }
-    }
-  },
-  {
-    "type": "function",
-    "function": {
-      "name": "send_message_to_user",
-      "description": "Send a conversational message to the user. Use this ONLY when no other tool applies — for greetings, status updates, explanations, or when explicitly asked a general question. Do not use this to avoid making a decision.",
-      "strict": true,
-      "parameters": {
-        "type": "object",
-        "properties": {
-          "message": { "type": "string", "description": "The message to send to the user." }
-        },
-        "required": ["message"],
         "additionalProperties": false
       }
     }

@@ -1,0 +1,14 @@
+skills:
+  - name: read-file
+    description: use this skill to read files
+    location: /skills/read-file.md
+  - name: write-file
+    description: use this skill to write to files
+    location: /skills/write-file.md
+  - name: list-files
+    description: use this skill to list files in a folder
+    location: /skills/list-files.md
+  - name: research-recipes
+    description: Search for recipes using TheMealDB API. Use this when you need to find recipes by name, ingredient, category, or area/cuisine.
+    location: /skills/research-recipes.md
+
