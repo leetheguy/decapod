@@ -2,6 +2,8 @@
 
 Decapod was created as a saner, safer alternative to [Open Claw](https://www.clawd.bot/) (an AI assistant platform).
 
+Warning! This readme was AI generated and may contain errors. Please verify all information.
+
 ## Key Features
 
 - **No root access** - Runs with minimal privileges
@@ -408,3 +410,21 @@ Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTIN
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+
+
+  ░░                      
+░░░░              ░░░░░░  
+░░░░  ░░            ░░░░░░
+░░░░  ░░        ░░    ░░▒▒
+░░░░░░▒▒          ░░▒▒░░▒▒
+  ░░▒▒                ░░▒▒
+    ░░▒▒  ░░░░░░░░  ░░▒▒  
+      ░░░░░░░░░░░░░░░░    
+    ░░░░░░░░██░░██░░░░░░  
+    ▒▒░░░░░░░░░░░░░░░░▒▒  
+  ░░░░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░
+  ░░░░  ▒▒░░    ░░▒▒  ░░░░
+  ░░    ▒▒        ▒▒    ░░
+
+Decapod - Your "Soft-Core/Hard-Shell" companion
