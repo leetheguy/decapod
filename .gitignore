@@ -77,7 +77,6 @@ build/
 *.tsbuildinfo
 
 # Database dumps
-*.sql
 *.dump
 
 # SSL certificates (if stored locally)

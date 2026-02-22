@@ -32,6 +32,9 @@ docker compose down
 # Rebuild and restart
 docker compose up -d --build
 
+# Update
+docker compose pull
+
 # View logs
 docker compose logs -f
 docker compose logs -f service_name

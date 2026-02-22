@@ -18,6 +18,12 @@ services:
       - N8N_TRUST_PROXY=true
       - NODES_EXCLUDE="[]"
       - NODE_FUNCTION_ALLOW_EXTERNAL=yamljs
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_DATABASE=${POSTGRES_DB}
+      - DB_POSTGRESDB_HOST=postgres
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_USER=${POSTGRES_USER}
+      - DB_POSTGRESDB_PASSWORD=${POSTGRES_PASSWORD}
     extra_hosts:
       - "${SUBDOMAIN}.${DOMAIN_NAME}:127.0.0.1"  # Map external domain to localhost for internal API calls
     volumes:
