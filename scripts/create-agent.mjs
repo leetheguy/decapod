@@ -30,8 +30,8 @@ const __dirname = path.dirname(__filename);
 
 // Paths
 const PROJECT_ROOT = path.resolve(__dirname, '..');
-const TEMPLATE_DIR = path.join(PROJECT_ROOT, 'extras', 'S3_structure', 'agents', 'template');
-const AGENTS_DIR = path.join(PROJECT_ROOT, 'extras', 'S3_structure', 'agents');
+const TEMPLATE_DIR = path.join(PROJECT_ROOT, 'components', 'S3_structure', 'agents', 'template');
+const AGENTS_DIR = path.join(PROJECT_ROOT, 'components', 'S3_structure', 'agents');
 const SKILLS_DIR = path.join(TEMPLATE_DIR, 'skills');
 
 /**
