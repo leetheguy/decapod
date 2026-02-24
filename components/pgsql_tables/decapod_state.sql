@@ -19,6 +19,15 @@ CREATE TABLE decapod_state (
 CREATE INDEX idx_decapod_state_agent 
 ON decapod_state(agent_name);
 
+-- Function to auto-update updated_at
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
 -- Auto-update updated_at trigger (reuse function from job_queue)
 CREATE TRIGGER update_decapod_state_updated_at 
 BEFORE UPDATE ON decapod_state 

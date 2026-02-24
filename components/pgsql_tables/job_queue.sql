@@ -32,14 +32,6 @@ ON job_queue(complete, archived, suspended);
 CREATE INDEX idx_job_queue_state_id 
 ON job_queue(state_id);
 
--- Function to auto-update updated_at
-CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
-BEGIN
-  NEW.updated_at = NOW();
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
 
 -- Trigger to auto-update updated_at on any change
 CREATE TRIGGER update_job_queue_updated_at 

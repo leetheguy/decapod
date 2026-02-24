@@ -15,7 +15,7 @@
 # 
 # Completely destroys and replaces all content in the Minio S3 bucket with the local S3_structure directory.
 # This script creates or uses a bucket called "decapod" and completely replaces
-# all files from extras/S3_structure/, DESTROYING any files in the bucket that don't exist locally.
+# all files from components/S3_structure/, DESTROYING any files in the bucket that don't exist locally.
 #
 # WARNING: This is a COMPLETE DESTRUCTION operation. The local directory is the source of truth.
 # - All files in the bucket that don't exist locally will be PERMANENTLY DELETED
@@ -57,7 +57,7 @@ RESET="\033[0m"
 
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-readonly SOURCE_DIR="${PROJECT_ROOT}/extras/S3_structure"
+readonly SOURCE_DIR="${PROJECT_ROOT}/components/S3_structure"
 readonly BUCKET_NAME="decapod"
 readonly ALIAS_NAME="decapod-minio"
 
