@@ -4,10 +4,10 @@ CREATE TABLE decapod_state (
   id SERIAL PRIMARY KEY,
   state_name VARCHAR(255) NOT NULL DEFAULT 'decapod',
   agent_name VARCHAR(255) NOT NULL DEFAULT 'decapod',
-  working BOOLEAN DEFAULT FALSE,
   default_model VARCHAR(100) DEFAULT 'anthropic/claude-haiku-4.5',
-  initial_session JSONB DEFAULT '{}',
-  response_to_user JSONB DEFAULT '{}',
+  current_model VARCHAR(100) DEFAULT '',
+  message_history JSONB DEFAULT '[]',
+  tools JSONB DEFAULT '[]',
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW(),
   

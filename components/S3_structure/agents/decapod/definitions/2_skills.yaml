@@ -1,0 +1,16 @@
+skills:
+  - name: delete-file
+    description: Delete a file from storage. Use this when you need to remove a file permanently.
+    location: /skills/delete-file.md
+  - name: list-files
+    description: List all files in a folder. Use this when you need to know what files are available before reading or writing.
+    location: /skills/list-files.md
+  - name: read-file
+    description: Read the contents of a file from storage. Use this when you need to load a file by path.
+    location: /skills/read-file.md
+  - name: research-recipes
+    description: Search for recipes using TheMealDB API. Use this when you need to find recipes by name, ingredient, category, or area/cuisine.
+    location: /skills/research-recipes.md
+  - name: write-file
+    description: Write or overwrite a file in storage. Use this when you need to save new content to a file.
+    location: /skills/write-file.md

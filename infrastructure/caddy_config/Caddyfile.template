@@ -24,3 +24,9 @@ console.s3.example.com {
         flush_interval -1
     }
 }
+
+noco.example.com {
+    reverse_proxy nocodb:8080 {
+        flush_interval -1
+    }
+}

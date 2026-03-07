@@ -19,7 +19,7 @@
     "type": "function",
     "function": {
       "name": "use_skill",
-      "description": "Execute a skill to resolve the current task. SUCCESS automatically removes the task from the queue. FAILURE returns an error and keeps the task active.",
+      "description": "Execute a skill. Always call read_skill first to get the correct parameter names and spec.",
       "strict": true,
       "parameters": {
         "type": "object",
@@ -28,121 +28,6 @@
           "parameters": { "type": "object", "description": "Skill parameters as JSON object." }
         },
         "required": ["name", "parameters"],
-        "additionalProperties": false
-      }
-    }
-  },
-  {
-    "type": "function",
-    "function": {
-      "name": "add_task_to_job",
-      "description": "Add a task to an existing job by job name.",
-      "strict": true,
-      "parameters": {
-        "type": "object",
-        "properties": {
-          "job_name": { "type": "string" },
-          "task": { "type": "string" }
-        },
-        "required": ["job_name", "task"],
-        "additionalProperties": false
-      }
-    }
-  },
-  {
-    "type": "function",
-    "function": {
-      "name": "create_job",
-      "description": "Initialize a new job. Use 'urgent' to prioritize the job.",
-      "strict": true,
-      "parameters": {
-        "type": "object",
-        "properties": {
-          "job_name": { "type": "string" },
-          "job_description": { "type": ["string", "null"] },
-          "urgent": { "type": ["boolean", "null"] },
-          "tasks": { "type": "array", "items": { "type": "string" } }
-        },
-        "required": ["job_name", "job_description", "urgent", "tasks"],
-        "additionalProperties": false
-      }
-    }
-  },
-  {
-    "type": "function",
-    "function": {
-      "name": "add_task_to_back",
-      "description": "Append a new task to the end of the current job's task list.",
-      "strict": true,
-      "parameters": {
-        "type": "object",
-        "properties": {
-          "task": { "type": "string" }
-        },
-        "required": ["task"],
-        "additionalProperties": false
-      }
-    }
-  },
-  {
-    "type": "function",
-    "function": {
-      "name": "add_task_to_front",
-      "description": "Prepend a task to the start of the list (immediate next action).",
-      "strict": true,
-      "parameters": {
-        "type": "object",
-        "properties": {
-          "task": { "type": "string" }
-        },
-        "required": ["task"],
-        "additionalProperties": false
-      }
-    }
-  },
-  {
-    "type": "function",
-    "function": {
-      "name": "move_current_task_to_back",
-      "description": "Cycle the current task to the end of the list to work on something else first.",
-      "strict": true,
-      "parameters": {
-        "type": "object",
-        "properties": {},
-        "additionalProperties": false
-      }
-    }
-  },
-  {
-    "type": "function",
-    "function": {
-      "name": "skip_current_task",
-      "description": "Permanently remove the current task from the queue.",
-      "strict": true,
-      "parameters": {
-        "type": "object",
-        "properties": {},
-        "additionalProperties": false
-      }
-    }
-  },
-  {
-    "type": "function",
-    "function": {
-      "name": "conclude_job",
-      "description": "Close the current job and move to the next one. Use 'complete' when all tasks are done successfully. Use 'suspended' if you're stuck or unable to finish.",
-      "strict": true,
-      "parameters": {
-        "type": "object",
-        "properties": {
-          "status": { 
-            "type": "string", 
-            "enum": ["complete", "suspended"],
-            "description": "Whether the job was completed successfully or suspended due to an issue."
-          },
-          "reason": { "type": "string" }
-        },
-        "required": ["status", "reason"],
         "additionalProperties": false
       }
     }
