@@ -1,11 +1,24 @@
 services:
+  streamer:
+    build:
+      context: ./streamer
+      dockerfile: Dockerfile
+    container_name: streamer
+    restart: unless-stopped
+    environment:
+      - PORT=3000
+    networks:
+      - web
+    ports:
+      - "3000:3000"
+
   caddy:
     image: caddy:latest
     container_name: caddy
     restart: unless-stopped
     ports:
-      - "80:80"
-      - "443:443"
+      - "${CADDY_IP:-0.0.0.0}:80:80"
+      - "${CADDY_IP:-0.0.0.0}:443:443"
     volumes:
       - caddy_data:/data
       - ${DATA_FOLDER}/caddy_config:/config
@@ -13,20 +26,29 @@ services:
     networks:
       - web
 
-  postgres:
-    image: postgres:latest
-    container_name: postgres
+  age-viewer:
+    build:
+      context: ./age-viewer
+      dockerfile: Dockerfile
+    container_name: age-viewer
+    restart: unless-stopped
+    networks:
+      - web
+
+  neo4j:
+    image: neo4j:latest
+    container_name: neo4j
     restart: unless-stopped
     environment:
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - NEO4J_AUTH=${NEO4J_USER}/${NEO4J_PASSWORD}
+      - NEO4J_dbms_connector_bolt_advertised__address=5.78.144.10:7687
+      - NEO4J_dbms_connector_https_advertised__address=neo4j.leenathan.com:443
     volumes:
-      - postgres_data:/var/lib/postgresql
+      - neo4j_data:/data
     networks:
       - web
     ports:
-      - "5432:5432"
+      - "${NEO4J_IP}:7687:7687"
 
 networks:
   web:
@@ -34,4 +56,4 @@ networks:
 
 volumes:
   caddy_data:
-  postgres_data:
+  neo4j_data:

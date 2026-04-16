@@ -1,0 +1,12 @@
+--- a/frontend/src/components/cypherresult/presentations/CypherResultTable.jsx
++++ b/frontend/src/components/cypherresult/presentations/CypherResultTable.jsx
+@@ -17,8 +17,9 @@
+  */
+
++const uuid = () => crypto.randomUUID();
++
+ import React, { useEffect, useState } from 'react';
+ import PropTypes from 'prop-types';
+ import { Table } from 'antd';
+-import { uuid } from 'cytoscape/src/util';
+ import CypherResultTab from '../../cytoscape/CypherResultTab';

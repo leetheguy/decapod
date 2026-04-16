@@ -30,3 +30,7 @@ noco.example.com {
         flush_interval -1
     }
 }
+
+age.example.com {
+    reverse_proxy age-viewer:3000
+}

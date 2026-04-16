@@ -1,0 +1,8 @@
+{
+  "name": "Sandbox",
+  "extensions": [],
+  "settings": {
+    "extensions.autoUpdate": false,
+    "extensions.autoCheckUpdates": false
+  }
+}

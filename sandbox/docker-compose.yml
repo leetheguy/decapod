@@ -1,0 +1,31 @@
+services:
+  sandbox:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - AGENT_PASSWORD=${AGENT_PASSWORD}
+    container_name: sandbox
+    restart: unless-stopped
+    ports:
+      - "2222:22"
+    networks:
+      - web
+    volumes:
+      - sandbox_data:/home/agent
+    # Resource limits to prevent runaway processes
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+networks:
+  web:
+    external: true
+
+volumes:
+  sandbox_data:

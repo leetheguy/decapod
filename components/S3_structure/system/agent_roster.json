@@ -1,0 +1,22 @@
+[
+  {
+    "agent_name": "scampi",
+    "agent_model": "openai/gpt-4.1-mini",
+    "role": "Fast, cheap, strong. High-volume tasks, bulk operations, simple tool calls."
+  },
+  {
+    "agent_name": "rangoon",
+    "agent_model": "anthropic/claude-haiku-4.5",
+    "role": "Fast and cheap with a bit more reasoning muscle. Workhorse for structured tasks."
+  },
+  {
+    "agent_name": "etouffee",
+    "agent_model": "moonshotai/kimi-k2",
+    "role": "General purpose and personable. Good for tasks needing a human touch."
+  },
+  {
+    "agent_name": "thermidor",
+    "agent_model": "TBD",
+    "role": "TBD. Benched until a model worthy of the name emerges."
+  }
+]
