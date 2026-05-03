@@ -1,0 +1,31 @@
+services:
+  typebot-builder:
+    image: baptistearno/typebot-builder:latest
+    container_name: typebot-builder
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${TYPEBOT_POSTGRES_DB}
+      - NEXTAUTH_URL=https://forms.${DOMAIN_NAME}
+      - NEXT_PUBLIC_VIEWER_URL=https://forms-bot.${DOMAIN_NAME}
+      - ENCRYPTION_SECRET=${TYPEBOT_ENCRYPTION_SECRET}
+      - ADMIN_EMAIL=${TYPEBOT_ADMIN_EMAIL}
+      - GOOGLE_AUTH_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_AUTH_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+    networks:
+      - web
+
+  typebot-viewer:
+    image: baptistearno/typebot-viewer:latest
+    container_name: typebot-viewer
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${TYPEBOT_POSTGRES_DB}
+      - NEXTAUTH_URL=https://forms.${DOMAIN_NAME}
+      - NEXT_PUBLIC_VIEWER_URL=https://forms-bot.${DOMAIN_NAME}
+      - ENCRYPTION_SECRET=${TYPEBOT_ENCRYPTION_SECRET}
+    networks:
+      - web
+
+networks:
+  web:
+    external: true

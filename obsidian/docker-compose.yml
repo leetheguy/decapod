@@ -1,0 +1,24 @@
+services:
+  obsidian:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - AGENT_PASSWORD=${AGENT_PASSWORD}
+    container_name: obsidian
+    restart: unless-stopped
+    ports:
+      - "5.78.144.10:2224:22"
+    networks:
+      - web
+    volumes:
+      - obsidian_data:/home/agent
+      - obsidian_vaults:/vaults
+
+networks:
+  web:
+    external: true
+
+volumes:
+  obsidian_data:
+  obsidian_vaults:

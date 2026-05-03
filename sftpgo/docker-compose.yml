@@ -1,0 +1,30 @@
+services:
+  sftpgo:
+    image: drakkan/sftpgo:latest
+    container_name: sftpgo
+    restart: unless-stopped
+    environment:
+      - SFTPGO_DEFAULT_ADMIN_USERNAME=${SFTPGO_ADMIN_USER}
+      - SFTPGO_DEFAULT_ADMIN_PASSWORD=${SFTPGO_ADMIN_PASSWORD}
+      - SFTPGO_DATA_PROVIDER__DRIVER=postgresql
+      - SFTPGO_DATA_PROVIDER__NAME=${SFTPGO_POSTGRES_DB}
+      - SFTPGO_DATA_PROVIDER__HOST=postgres
+      - SFTPGO_DATA_PROVIDER__PORT=5432
+      - SFTPGO_DATA_PROVIDER__USERNAME=${POSTGRES_USER}
+      - SFTPGO_DATA_PROVIDER__PASSWORD=${POSTGRES_PASSWORD}
+      - SFTPGO_WEBDAVD__BINDINGS__0__PORT=8090
+    volumes:
+      - sftpgo_data:/srv/sftpgo
+      - sftpgo_home:/var/lib/sftpgo
+    ports:
+      - "5.78.144.10:2022:2022"
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
+
+volumes:
+  sftpgo_data:
+  sftpgo_home:

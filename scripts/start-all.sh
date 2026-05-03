@@ -12,14 +12,23 @@ echo "========================================"
 echo "1. Infrastructure (Postgres, Caddy)..."
 docker compose -f "$PROJECT_ROOT/infrastructure/docker-compose.yml" up -d
 
-echo "2. Object Storage (MinIO)..."
-docker compose -f "$PROJECT_ROOT/minio/docker-compose.yml" up -d
-
-echo "3. Automation Engine (n8n)..."
+echo "2. Automation Engine (n8n)..."
 docker compose -f "$PROJECT_ROOT/n8n/docker-compose.yml" up -d
 
-echo "4. Chat Interface (Open WebUI)..."
+echo "3. Chat Interface (Open WebUI)..."
 docker compose -f "$PROJECT_ROOT/openwebui/docker-compose.yml" up -d
+
+echo "4. Forms (Typebot)..."
+docker compose -f "$PROJECT_ROOT/typebot/docker-compose.yml" up -d
+
+echo "5. File Storage (SFTPGo)..."
+docker compose -f "$PROJECT_ROOT/sftpgo/docker-compose.yml" up -d
+
+echo "6. Data Container (Dataguy)..."
+docker compose -f "$PROJECT_ROOT/dataguy/docker-compose.yml" up -d
+
+echo "7. Obsidian Sync..."
+docker compose -f "$PROJECT_ROOT/obsidian/docker-compose.yml" up -d
 
 echo ""
 echo "All services are up! Check your domains for availability."

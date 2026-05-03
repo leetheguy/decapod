@@ -1,0 +1,33 @@
+services:
+  dataguy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - AGENT_PASSWORD=${AGENT_PASSWORD}
+    container_name: dataguy
+    restart: unless-stopped
+    ports:
+      - "5.78.144.10:2223:22"
+    networks:
+      - web
+    volumes:
+      - dataguy_data:/home/agent
+      - sftpgo_sftpgo_data:/mnt/files
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+
+networks:
+  web:
+    external: true
+
+volumes:
+  dataguy_data:
+  sftpgo_sftpgo_data:
+    external: true

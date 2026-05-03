@@ -2,7 +2,7 @@ FROM alpine:latest
 
 ARG AGENT_PASSWORD=changeme
 
-# Install essentials
+# Install essentials + Node.js 22 (required for Obsidian CLI)
 RUN apk add --no-cache \
     openssh \
     bash \
@@ -20,17 +20,15 @@ RUN apk add --no-cache \
     jq \
     sudo \
     tmux \
-    htop \
-    make \
-    g++ \
-    gcc \
-    pandoc-cli \
     gcompat
 
 # Install uv
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh && \
     mv /root/.local/bin/uv /usr/local/bin/uv && \
     mv /root/.local/bin/uvx /usr/local/bin/uvx
+
+# Install Obsidian headless CLI globally
+RUN npm install -g @obsidianmd/obsidian-headless
 
 # Create agent user with sudo access
 RUN adduser -D -s /bin/bash agent && \

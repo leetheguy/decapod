@@ -26,29 +26,6 @@ services:
     networks:
       - web
 
-  age-viewer:
-    build:
-      context: ./age-viewer
-      dockerfile: Dockerfile
-    container_name: age-viewer
-    restart: unless-stopped
-    networks:
-      - web
-
-  neo4j:
-    image: neo4j:latest
-    container_name: neo4j
-    restart: unless-stopped
-    environment:
-      - NEO4J_AUTH=${NEO4J_USER}/${NEO4J_PASSWORD}
-      - NEO4J_dbms_connector_bolt_advertised__address=5.78.144.10:7687
-      - NEO4J_dbms_connector_https_advertised__address=neo4j.leenathan.com:443
-    volumes:
-      - neo4j_data:/data
-    networks:
-      - web
-    ports:
-      - "${NEO4J_IP}:7687:7687"
 
 networks:
   web:
@@ -56,4 +33,3 @@ networks:
 
 volumes:
   caddy_data:
-  neo4j_data:

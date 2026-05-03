@@ -19,15 +19,9 @@ RUN apk add --no-cache \
     unzip \
     jq \
     sudo \
-    tmux \
-    htop \
-    make \
-    g++ \
-    gcc \
-    pandoc-cli \
     gcompat
 
-# Install uv
+# Install uv (static binary, no libc issues)
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh && \
     mv /root/.local/bin/uv /usr/local/bin/uv && \
     mv /root/.local/bin/uvx /usr/local/bin/uvx

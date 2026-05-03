@@ -8,6 +8,9 @@ services:
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       # S3 Storage configuration (Minio) - temporarily disabled for troubleshooting
       - S3_ENABLED=false
+      # Extended timeouts for slow/large models (e.g. Kimi K2 via OpenRouter)
+      - AIOHTTP_CLIENT_TIMEOUT=300
+      - AIOHTTP_CLIENT_TIMEOUT_OPENAI_MODEL_LIST=10
     volumes:
       - openwebui_data:/app/backend/data
     networks:
